@@ -1,0 +1,11 @@
+extends layout
+block content
+  if(authenticated)
+    p Welcome back, #{me.first}
+    a(href='/logout') 退出
+  else
+    div(class=top-header)
+      div
+        p 欢迎您进入node社区
+
+
