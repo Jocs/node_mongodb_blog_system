@@ -1,11 +1,58 @@
 extends layout
-block content
-  if(authenticated)
-    p Welcome back, #{me.first}
-    a(href='/logout') 退出
+block content 
+  if (authenticated)
+    div(id='header')
+      div(id='nav')
+        ul
+          li: p(id='logo')
+            span(class='glyphicon glyphicon-leaf')
+            span &nbsp;Blog 
+          li: form(method='POST',action='#',id='nav-form')
+                div(class='form-group')
+                  input(type='text',name='search',class='form-control',placeholder='请输入查找文章或用户...')
+                button(type='submit',class='form-control',id='nav-submit')
+                  span(class='glyphicon glyphicon-search')
+          li(id='home-page'): a(href='/') 主页
+          li: a(href='/profile') 个人页面
+          li: a(href='/article',id='generate-article') 发布文章   
+          li(id='profile')
+            p #{me.name.full} &nbsp;&nbsp;
+              a(href="/logout",id='logout') 登出&nbsp;
+                span(class='glyphicon glyphicon-off')
   else
-    div(class=top-header)
-      div
-        p 欢迎您进入node社区
+    script(src='./javascripts/main.js')
+    div(id='top-header')
+      div(id='top-header-inner')
+        div(class='top-left')
+          h1 
+            span(class='glyphicon glyphicon-leaf')
+            span &nbsp;Blog 
+          p 欢迎您进入社区
+        div(class='top-right')
+          div(id='form-header')
+            p(id='header-text') 登陆Blog
+            a(href='#signup',id='form-change') 
+              span(id='a-text') 注册&nbsp;&nbsp;
+              span(class='glyphicon glyphicon-arrow-right')
+            div(class='clear')
+          form(method='POST', action='/login',id='login')
+            if(loginEmail)
+              p 
+                span(class='glyphicon glyphicon-leaf')
+                span &nbsp;&nbsp;欢迎加入Blog，请登录 ...
+            div(class='form-group')
+              input(type='email',name='email',placeholder='输入邮箱地址',class='form-control',value=loginEmail)
+            div(class='form-group')
+              input(type='password',name='password',placeholder='输入密码',class='form-control')
+            input(type='submit',class='form-control',value='登陆Blog')
+          form(method='POST', action='/signup',id='signup')
+            div(class='form-group')
+              input(type='text',name='name.first',placeholder='姓',class='form-control inline left')
+              input(type='text',name='name.last',placeholder='名',class='form-control inline right')
+            div(class='form-group')
+              input(type='email',name='email',placeholder='输入邮箱地址',class='form-control')
+            div(class='form-group')
+              input(type='password',name='password',placeholder='输入密码',class='form-control')
+            input(type='submit',class='form-control',value='注册Blog')
 
 
