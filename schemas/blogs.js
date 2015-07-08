@@ -1,22 +1,33 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var commentsSchema = new Schema({
+	author: String,
+	comment: String,
+	hidden: {type: Boolean, default:false},
+	date: {type: Date, default: Date.now()}
+});
+
 var blogSchema = new Schema({
 	title: String,
 	author: String,
-	body: String,
-	comments: [comments],
+	content: String,
+	comments: [commentsSchema],
+	tags:[String],
 	date: {
 		createAt:{
-			type:date,
+			type:Date,
 			default: Date.now()
 		},
 		updateAt:{
-			type:date,
+			type:Date,
 			default: Date.now()
 		}
 	},
-	hidden: Boolean,
+	hidden: {
+		     type: Boolean,
+	         default:false
+	    },
 	meta: {
 		vote: {
 			type: Number,
@@ -25,11 +36,7 @@ var blogSchema = new Schema({
 	}
 });
 
-var comments = new Schema({
-	author: String,
-	comment: String,
-	date: {type: Date, default: Date.now()}
-});
+
 
 
 blogSchema.pre('save', function(next){
@@ -44,7 +51,7 @@ blogSchema.pre('save', function(next){
 blogSchema.statics = {
 	fetch: function( cb ){
 		return this.find({})
-		           .sort('date.updateAt')
+		           .sort({'date.updateAt':-1})
 		           .exec( cb );
 	},
 	findById: function( id, cb ){

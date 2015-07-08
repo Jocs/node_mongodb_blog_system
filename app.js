@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+
 var User = require('./models/users');
 
 var index = require('./routes/index');
@@ -14,8 +15,11 @@ var signup = require('./routes/signup');
 var login_email = require('./routes/login_email');
 var login = require('./routes/login');
 var get_logout = require('./routes/get_logout');
+var post_posts = require('./routes/post_posts');
+var post_comment = require('./routes/post_comment');
 
 var app = express();
+app.locals.moment = require('moment');
 
 var url = "mongodb://127.0.0.1:12345/blog";
 
@@ -65,6 +69,8 @@ app.use('/', signup);
 app.use('/', login_email);
 app.use('/', login);
 app.use('/', get_logout);
+app.use('/', post_posts);
+app.use('/',post_comment);
 
 
 

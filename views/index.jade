@@ -1,6 +1,7 @@
 extends layout
 block content 
-  if (authenticated)
+  if(authenticated)
+    script(src='javascripts/main.js')
     div(id='header')
       div(id='nav')
         ul
@@ -14,13 +15,144 @@ block content
                   span(class='glyphicon glyphicon-search')
           li(id='home-page'): a(href='/') 主页
           li: a(href='/profile') 个人页面
-          li: a(href='/article',id='generate-article') 发布文章   
+          li: a(href='#',id='generate-article') 发布文章   
           li(id='profile')
             p #{me.name.full} &nbsp;&nbsp;
-              a(href="/logout",id='logout') 登出&nbsp;
-                span(class='glyphicon glyphicon-off')
+              a(href="/logout",id='logout')
+                span(class='glyphicon glyphicon-off') 
+                span &nbsp;登出
+    div(id='post-blog')
+      div(id='mask')
+      div(id='blog-form')
+        div(id = 'blog-form-header')
+          p 编辑文章
+          a(href='#',id='blog-form-close')
+            span(style='display:none') 关闭
+            span(class='glyphicon glyphicon-remove-sign')
+        div(id='blog-form-body')
+          form(method='POST',action='/post')
+            input(type='hidden',name='author',value=me.name.full)
+            div(class='form-group')
+              input(type='text',name='title',class='form-control',placeholder='文章标题')
+            div(class='form-group',id='editparent')
+              div(id='editControls',class='span9',style='padding:5px')
+                div(class='btn-group')
+                  a(class='btn',data-role='undo' href='#')
+                    i(class='icon-undo')
+                  a(class='btn',data-role='redo' href='#')
+                    i(class='icon-repeat')
+                div(class='btn-group')
+                  a(class='btn',data-role='bold',href='#')
+                    b Bold
+                  a(class='btn',data-role='italic',href='#')
+                    em Italic
+                  a(class='btn',data-role='underline',href='#')
+                    b U
+                  a(class='btn',data-role='strikeThrough',href='#')
+                    strike abc
+                div(class='btn-group')
+                  a(class='btn',data-role='justifyLeft',href='#')
+                    i(class='icon-align-left')
+                  a(class='btn',data-role='justifyCenter',href='#')
+                    i(class='icon-align-center')
+                  a(class='btn',data-role='justifyRight',href='#')
+                    i(class='icon-align-right')
+                  a(class='btn',data-role='justifyFull',href='#')
+                    i(class='icon-align-justify')
+                div(class='btn-group')
+                  a(class='btn',data-role='indent',href='#')
+                    i(class='icon-indent-right')
+                  a(class='btn',data-role='outdent',href='#')
+                    i(class='icon-indent-left')
+                div(class='btn-group')
+                  a(class='btn',data-role='insertUnorderedList',href='#')
+                    i(class='icon-list-ul')
+                  a(class='btn',data-role='inserOrderedList',href='#')
+                    i(class='icon-list-ol')
+                div(class='btn-group')
+                  a(class='btn',data-role='h1',href='#') h
+                    sub 1
+                  a(class='btn',data-role='h2',href='#') h
+                    sub 2
+                  a(class='btn',data-role='p',href='#') p
+                div(class='btn-group')
+                  a(class='btn',data-role='subscript',href='#')
+                    i(class='icon-subscript')
+                  a(class='btn',data-role='superscript',href='#')
+                    i(class='icon-superscript')  
+              div(id='editor',class='span9',contenteditable)
+            input(type='hidden',name='content',id='hidden-body')
+            div(class='form-group')
+              label(class='control-label') 标签:
+                span(id='label-explain') &nbsp;&nbsp;&nbsp;&nbsp;标签内容尽量与文章内容相关,这样更容易被搜索到,并且使用"空格"隔开
+              input(type='text',name='tags',class='form-control',placeholder='填写标签用"空格"隔开')
+            div(class='form-group')
+              label(for='hidden') 匿名发布:&nbsp;
+              input(type='checkBox',name='hidden',id='hidden')
+            button(type='submit',class='btn btn-primary') 发布
+    div(id='blog-body')
+      div(id='body-left') 
+        p
+          span(class='glyphicon glyphicon-list-alt')
+          strong &nbsp;最新文章
+        hr
+        ul
+          each blog in blogs
+            li
+              div(class='vote')
+                a(href='#')
+                  span(class='glyphicon glyphicon-menu-up')
+                p #{blog.meta.vote}
+                a(href='#')
+                  span(class='glyphicon glyphicon-menu-down')
+              p(class='title') #{blog.title}
+              p(class='content') !{blog.content}
+              p(class='footer')
+                if (blog.hidden)
+                  span Blog用户 更新于:&nbsp;
+                else 
+                  span #{blog.author} 更新于:&nbsp;
+                if (moment().format('YYYY-MM-DD') === moment(blog.date.updateAt).format('YYYY-MM-DD'))
+                  span #{moment(blog.date.updateAt).format('HH:mm:ss')}&nbsp;&nbsp;
+                else
+                  span #{moment(blog.date.updateAt).format('YYYY-MM-DD')}&nbsp;&nbsp;
+                a(href='#' id='show-comments')
+                  span(class='glyphicon glyphicon-edit')
+                  span(id='comments-count',style='display:inline-block')  &nbsp;#{blog.comments.length}条评论
+                  span(id='hidden-comments',style='display:none')  收起评论
+              div(id='get-comments',style='display:none')
+                span(class='arrow')
+                ul(id='comments-list')
+                  each comment in blog.comments
+                    li
+                      p(class='comment-header')
+                        if (comment.hidden)
+                          span Blog用户 回复于:&nbsp;
+                        else 
+                          span #{comment.author} 回复于:&nbsp;
+                        if (moment().format('YYYY-MM-DD') === moment(comment.date).format('YYYY-MM-DD'))
+                          span #{moment(comment.date).format('HH:mm:ss')}
+                        else
+                          span #{moment(comment.date).format('YYYY-MM-DD')}
+                      p(class='comment-body')
+                        span #{comment.comment}
+                      hr
+                div(contenteditable=true,aria-label='写下你的评论...',class='textarea',id='write-comment')
+                input(type='hidden',name='author',value=me.name.full,id='comment-author')
+                input(type='hidden',value=blog._id,id='blogId')
+                div(id='post-comment-wrapper')
+                  div(class='form-group')
+                    label(for='comment-hidden') 匿名发表: &nbsp;
+                    input(type='checkBox',name='hidden',id='comment-hidden')
+                  a(href='#',id='close-comment') 取消
+                  button(class='btn btn-primary',id='post-comment') 发表评论
+              hr
+      div(id='body-right')
+    script(src="javascripts/jquery.min.js")
+    script(src="javascripts/bootstrap.min.js")
+    script(src='javascripts/html_editor.js')
   else
-    script(src='./javascripts/main.js')
+    script(src='./javascripts/login.js')
     div(id='top-header')
       div(id='top-header-inner')
         div(class='top-left')
