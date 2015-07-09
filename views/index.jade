@@ -98,14 +98,25 @@ block content
         hr
         ul
           each blog in blogs
-            li
-              div(class='vote')
-                a(href='#')
+            li(special_id=blog._id)
+              div(class='vote',blog-id=blog._id,user-name=me.name.full)
+                button(class='up',title='感谢作者',data-role='up')
                   span(class='glyphicon glyphicon-menu-up')
-                p #{blog.meta.vote}
-                a(href='#')
+                  p #{blog.voter.length}
+                button(class='down',title='取消感谢',data-role='down')
                   span(class='glyphicon glyphicon-menu-down')
+              p(class='tags')
+                each tag in blog.tags
+                  a(href='javascript:;') #{tag}
               p(class='title') #{blog.title}
+              if (blog.voter.length == 0)
+                p(class='voter') 还没有人赞同
+              else if (blog.voter.length == 1)
+                p(class='voter') #{blog.voter[0]} 赞同
+              else if (blog.voter.length == 2)
+                p(class='voter') #{blog.voter[0]},#{blog.voter[1]} 两人赞同
+              else
+                p(class='voter') #{blog.voter[0]},#{blog.voter[1]},#{blog.voter[2]} 等人赞同
               p(class='content') !{blog.content}
               p(class='footer')
                 if (blog.hidden)
@@ -116,13 +127,13 @@ block content
                   span #{moment(blog.date.updateAt).format('HH:mm:ss')}&nbsp;&nbsp;
                 else
                   span #{moment(blog.date.updateAt).format('YYYY-MM-DD')}&nbsp;&nbsp;
-                a(href='#' id='show-comments')
+                a(href='javascript:void(0)' class='show-comments')
                   span(class='glyphicon glyphicon-edit')
-                  span(id='comments-count',style='display:inline-block')  &nbsp;#{blog.comments.length}条评论
-                  span(id='hidden-comments',style='display:none')  收起评论
-              div(id='get-comments',style='display:none')
+                  span(class='comments-count',style='display:inline-block')  &nbsp;#{blog.comments.length}条评论
+                  span(class='hidden-comments',style='display:none')  收起评论
+              div(class='get-comments',style='display:none')
                 span(class='arrow')
-                ul(id='comments-list')
+                ul(class='comments-list')
                   each comment in blog.comments
                     li
                       p(class='comment-header')
@@ -137,15 +148,15 @@ block content
                       p(class='comment-body')
                         span #{comment.comment}
                       hr
-                div(contenteditable=true,aria-label='写下你的评论...',class='textarea',id='write-comment')
-                input(type='hidden',name='author',value=me.name.full,id='comment-author')
-                input(type='hidden',value=blog._id,id='blogId')
-                div(id='post-comment-wrapper')
+                div(contenteditable=true,aria-label='写下你的评论...',class='textarea write-comment')
+                input(type='hidden',name='author',value=me.name.full,class='comment-author')
+                input(type='hidden',value=blog._id,class='blogId')
+                div(class='comment-wrapper')
                   div(class='form-group')
-                    label(for='comment-hidden') 匿名发表: &nbsp;
-                    input(type='checkBox',name='hidden',id='comment-hidden')
-                  a(href='#',id='close-comment') 取消
-                  button(class='btn btn-primary',id='post-comment') 发表评论
+                    label 匿名发表: &nbsp;
+                    input(type='checkBox',name='hidden',class='comment-hidden')
+                  a(href='javascript:void(0)',class='close-comment') 取消
+                  button(class='btn btn-primary',class='post-comment') 发表评论
               hr
       div(id='body-right')
     script(src="javascripts/jquery.min.js")

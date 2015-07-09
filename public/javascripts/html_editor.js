@@ -12,18 +12,19 @@ $(function() {
 					}
 					
 				});
-				$('#post-comment').click(function(e){
+				$('.post-comment').click(function(e){
 					var data = {
-						author:$('#comment-author').val(), 
-						comment: $('#write-comment').text(),
-						hidden:$('#comment-hidden').is(':checked'),
+						author:$(this).parent().parent().find('.comment-author').first().val(), 
+						comment: $(this).parent().parent().find('.write-comment').first().text(),
+						hidden: $(this).parent().parent().find('.comment-hidden').first().is(':checked'),
 						date: new Date()
 					};
-					$.post('/comment/' + $('#blogId').val(), data, function(results){
+					var that = $(this);
+					$.post('/comment/' + $(this).parent().parent().find('.blogId').first().val(), data, function(results){
 						console.log(results);
-						var commentsList = $('#comments-list');
+						var commentsList = that.parent().parent().find('.comments-list').first();
 						commentsList.empty();
-						$('#comments-count').text(' ' + results.length + '条评论');
+						that.parent().parent().parent().find('.comments-count').first().text(' ' + results.length + '条评论');
 						for(var i = 0; i < results.length; i++ ){
 							var author = results[i].hidden == true ? 'Blog用户': results[i].author;
 							var time = moment(results[i].date)
@@ -40,7 +41,41 @@ $(function() {
 							         '</li>';
 							commentsList.prepend( _h );
 						}
-						$('#write-comment').text('');
+						that.parent().parent().find('.write-comment').first().text('');
+					});
+				});
+
+				$('.vote button').click(function( e ){
+					var data = {
+						userName: $(this).parent('.vote').first().attr('user-name'),
+						isVote: $(this).attr('data-role') === 'up' ? true: false
+					};
+					var that = $(this);
+					$.post('/vote/' + $(this).parent('.vote').first().attr('blog-id'), data, function(results){
+						//console.log(results);
+						var _text;
+						if(results.nameArray.length == 0){
+							_text = '还没人赞同';
+						} else if(results.nameArray.length == 1){
+							_text = results.nameArray[0] + ' 赞同';
+						} else if(results.nameArray.length == 2){
+							_text = results.nameArray.join(',') + ' 两人赞同';
+						} else {
+							_text = results.nameArray.join(',') + ' 等人赞同';
+						}
+						that.parent('.vote').find('button').first().find('p').first().text(results.length);
+						that.parent().parent().find('.voter').first().text(_text);
 					});
 				});
 			});
+
+
+
+
+
+
+
+
+
+
+

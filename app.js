@@ -17,6 +17,7 @@ var login = require('./routes/login');
 var get_logout = require('./routes/get_logout');
 var post_posts = require('./routes/post_posts');
 var post_comment = require('./routes/post_comment');
+var post_vote = require('./routes/post_vote');
 
 var app = express();
 app.locals.moment = require('moment');
@@ -71,6 +72,7 @@ app.use('/', login);
 app.use('/', get_logout);
 app.use('/', post_posts);
 app.use('/',post_comment);
+app.use('/', post_vote);
 
 
 
