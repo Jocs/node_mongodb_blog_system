@@ -18,6 +18,7 @@ var get_logout = require('./routes/get_logout');
 var post_posts = require('./routes/post_posts');
 var post_comment = require('./routes/post_comment');
 var post_vote = require('./routes/post_vote');
+var post_delate_comment = require('./routes/post_delate_comment');
 
 var app = express();
 app.locals.moment = require('moment');
@@ -73,6 +74,7 @@ app.use('/', get_logout);
 app.use('/', post_posts);
 app.use('/',post_comment);
 app.use('/', post_vote);
+app.use('/', post_delate_comment);
 
 
 

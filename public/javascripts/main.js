@@ -9,6 +9,7 @@ window.onload = function(){
 
 	var writeComment = document.getElementsByClassName('textarea');
 	var showComments = document.getElementsByClassName('show-comments');
+	var commentHeader = document.getElementsByClassName('comment-header');
 	//console.log(showComments);
 
 	genArticle.onclick = function(){
@@ -25,6 +26,7 @@ window.onload = function(){
 	};
 //以下进行了修改，一篇文章只能有一个id属性。
 	for(var i = 0; i < writeComment.length; i++){
+		//getLabel(writeComment[i]);
 		writeComment[i].onfocus = function(){
 			var commentWrapper = this.parentNode.getElementsByClassName('comment-wrapper')[0];
 			var closeComment = commentWrapper.getElementsByClassName('close-comment')[0];
@@ -36,7 +38,7 @@ window.onload = function(){
 	}
 	for(var i = 0; i < showComments.length; i ++){
 		showComments[i].onclick = function(){
-			console.log(showComments[i]);
+			//console.log(showComments[i]);
 			var getComments = this.parentNode.nextSibling;
 			var commentCount = this.getElementsByClassName('comments-count')[0];
 			var hiddenComments = this.getElementsByClassName('hidden-comments')[0];
@@ -48,9 +50,22 @@ window.onload = function(){
 			getComments.style.display = 'none';
 			commentCount.style.display = 'inline-block';
 			hiddenComments.style.display = 'none';
-		}
-	};
+		    }
+	    };
 	}
+
+	/*for(var i = 0; i < commentHeader.length; i ++){
+		commentHeader[i].getElementsByTagName('a')[0].onclick = function(){
+			var inputBox = this.parentNode.parentNode.parentNode.parentNode.getElementsByClassName('textarea')[0];
+			var replyTo = this.parentNode.getAttribute('comment-author');
+			inputBox.focus();
+			inputBox.setAttribute('reply-to', replyTo );
+			//getLabel(inputBox);
+		};
+	}*/
+	/*function getLabel(element){
+		element.innerHTML = element.getAttribute('aria-label');
+	}*/
 	
 };
 

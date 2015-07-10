@@ -15,13 +15,14 @@ $(function() {
 				$('.post-comment').click(function(e){
 					var data = {
 						author:$(this).parent().parent().find('.comment-author').first().val(), 
+						reply: $(this).parent().parent().find('.write-comment').first().attr('reply-to'),
 						comment: $(this).parent().parent().find('.write-comment').first().text(),
 						hidden: $(this).parent().parent().find('.comment-hidden').first().is(':checked'),
 						date: new Date()
 					};
 					var that = $(this);
 					$.post('/comment/' + $(this).parent().parent().find('.blogId').first().val(), data, function(results){
-						console.log(results);
+						//console.log(results);
 						var commentsList = that.parent().parent().find('.comments-list').first();
 						commentsList.empty();
 						that.parent().parent().parent().find('.comments-count').first().text(' ' + results.length + '条评论');
@@ -32,18 +33,93 @@ $(function() {
 							                    .format('MM/DD/YYYY') ? moment(results[i].date)
 							                    .format('HH:mm:ss'): moment(results[i].date)
 							                    .format('YYYY-MM-DD');
-							var _h = '<li>' +
-							            '<p class="comment-header">' + author + '  回复于: ' +
-							              '<span>' + time + '</span>' +
+							if(results[i].reply==''){
+								var _h = '<li>' +
+							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复于: ' +
+							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
+							              ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>' +
 							            '</p>' +
 										'<p class="comment-body">' + results[i].comment +'</p>' +
 										'<hr>' +
 							         '</li>';
-							commentsList.prepend( _h );
+							} else {
+								var _h = '<li>' +
+							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复: ' + results[i].reply + ' ' +
+							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
+							              ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>' +
+							            '</p>' +
+										'<p class="comment-body">' + results[i].comment +'</p>' +
+										'<hr>' +
+							         '</li>';
+							}
+							
+							commentsList.prepend( $(_h) );
 						}
 						that.parent().parent().find('.write-comment').first().text('');
+						that.parent().parent().find('.write-comment').first().attr('reply-to','');
+						//replyEvent();
 					});
 				});
+				
+				function replyEvent(){
+					$('.comments-list').delegate("a", "click", function(e){
+					
+						if(~(e.target.className.indexOf('reply'))){
+							console.log(e.target.className);
+							var inputBox = $(this).parent().parent().parent().parent().find('.textarea').first();
+			                var replyTo = $(this).parent().attr('comment-author');
+			                inputBox.focus();
+			                inputBox.attr('reply-to', replyTo );
+						}
+
+						if(~(e.target.className.indexOf('delate'))){
+							console.log($(this).attr('comment-id'));
+							var data = {
+									commentId: $(this).attr('comment-id')
+								};
+								var that = $(this);
+							$.post('/delate-comment/' + $(this).parent().parent().parent().parent().find('.blogId').first().val(), data, function(results){
+								console.log(results);
+								var commentsList = that.parent().parent().parent().parent().find('.comments-list').first();
+						        commentsList.empty();
+						
+						        commentsList.parent().parent().find('.comments-count').first().text(' ' + results.length + '条评论');
+						for(var i = 0; i < results.length; i++ ){
+							var author = results[i].hidden == true ? 'Blog用户': results[i].author;
+							var time = moment(results[i].date)
+							                    .format('MM/DD/YYYY') === moment()
+							                    .format('MM/DD/YYYY') ? moment(results[i].date)
+							                    .format('HH:mm:ss'): moment(results[i].date)
+							                    .format('YYYY-MM-DD');
+							if(results[i].reply==''){
+								var _h = '<li>' +
+							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复于: ' +
+							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
+							              ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>' +
+							            '</p>' +
+										'<p class="comment-body">' + results[i].comment +'</p>' +
+										'<hr>' +
+							         '</li>';
+							} else {
+								var _h = '<li>' +
+							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复: ' + results[i].reply + ' ' +
+							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
+							              ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>' +
+							            '</p>' +
+										'<p class="comment-body">' + results[i].comment +'</p>' +
+										'<hr>' +
+							         '</li>';
+							}
+							
+							commentsList.append( $(_h) );
+						}
+							});
+						}
+						
+					});
+				}
+
+				replyEvent();
 
 				$('.vote button').click(function( e ){
 					var data = {

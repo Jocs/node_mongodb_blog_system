@@ -281,29 +281,43 @@ input[type='submit']{
 	font-size: 12px;
 	margin: 0;
 }
-#blog-body #body-left ul li .title{
-	font-weight: 700;
-	font-size: 14px;
-	color:#666;
-	line-height: 1.7;
-}
-#blog-body #body-left ul li .voter{
-	font-size: 12px;
-	color:#aaa;
-	line-height: 12px;
-}
-#blog-body #body-left ul li .tags a{
+#blog-body #body-left ul li .tags a[role='tag']{
 	font-size:12px;
 	background: #eff6fa;
 	border-radius: 30px;
 	margin: 0 5px 0 5px;
 	padding:5px 8px;
 }
-#blog-body #body-left ul li .tags a:hover{
+#blog-body #body-left ul li .tags a[role='tag']:hover{
 	background: #698ebf;
 	color:#eff6fa;
 	text-decoration: none;
 }
+#blog-body #body-left ul li .title{
+	font-weight: 700;
+	font-size: 14px;
+	color:#666;
+	line-height: 1.7;
+}
+#blog-body #body-left ul li a[role='modify'],
+#blog-body #body-left ul li a[role='reply'],
+#blog-body #body-left ul li a[role='delate']{
+	font-size: 12px;
+	color:#bbb;
+	text-decoration: none;
+}
+#blog-body #body-left ul li a[role='modify']:hover,
+#blog-body #body-left ul li a[role='reply']:hover,
+#blog-body #body-left ul li a[role='delate']:hover
+{
+	color:#333;
+}
+#blog-body #body-left ul li .voter{
+	font-size: 12px;
+	color:#aaa;
+	line-height: 12px;
+}
+
 #blog-body #body-left ul li .content{
 	font-size: 13px;
 	color:#222;

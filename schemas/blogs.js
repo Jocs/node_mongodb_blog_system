@@ -4,6 +4,7 @@ var Users = require('../models/users');
 
 var commentsSchema = new Schema({
 	author: String,
+	reply: String,
 	comment: String,
 	hidden: {type: Boolean, default:false},
 	date: {type: Date, default: Date.now()}
