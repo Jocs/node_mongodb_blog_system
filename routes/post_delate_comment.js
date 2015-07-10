@@ -15,7 +15,7 @@ router.post('/delate-comment/:blogId', function(req, res, next) {
 				if(err) {
 					console.log(err);
 				} else {
-					res.send(blog[0].comments);
+					res.send({comments:blog[0].comments,name:req.session.name});
 				}
 			});
 		}

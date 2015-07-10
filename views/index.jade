@@ -16,7 +16,7 @@ block content
           li(id='home-page'): a(href='/') 主页
           li: a(href='/profile') 个人页面
           li: a(href='#',id='generate-article') 发布文章   
-          li(id='profile')
+          li(id='profile',my-name=me.name.full)
             p #{me.name.full} &nbsp;&nbsp;
               a(href="/logout",id='logout')
                 span(class='glyphicon glyphicon-off') 
@@ -156,11 +156,13 @@ block content
                         if (moment().format('YYYY-MM-DD') === moment(comment.date).format('YYYY-MM-DD'))
                           span #{moment(comment.date).format('HH:mm:ss')} &nbsp;
                           a(href='javascript:;',role='reply'): span(class='glyphicon glyphicon-share-alt reply') 回复&nbsp;
-                          a(href='javascript:;',role='delate',comment-id=comment._id): span(class='glyphicon glyphicon-trash delate') 删除
+                          if (comment.author == me.name.full)
+                            a(href='javascript:;',role='delate',comment-id=comment._id): span(class='glyphicon glyphicon-trash delate') 删除
                         else
                           span #{moment(comment.date).format('YYYY-MM-DD')} &nbsp;
                           a(href='javascript:;',role='reply'): span(class='glyphicon glyphicon-share-alt reply' ) 回复&nbsp;
-                          a(href='javascript:;',role='delate',comment-id=comment._id): span(class='glyphicon glyphicon-trash delate') 删除
+                          if (comment.author == me.name.full)
+                            a(href='javascript:;',role='delate',comment-id=comment._id): span(class='glyphicon glyphicon-trash delate') 删除
                       p(class='comment-body')
                         span #{comment.comment}
                       hr

@@ -21,8 +21,9 @@ $(function() {
 						date: new Date()
 					};
 					var that = $(this);
-					$.post('/comment/' + $(this).parent().parent().find('.blogId').first().val(), data, function(results){
+					$.post('/comment/' + $(this).parent().parent().find('.blogId').first().val(), data, function(msg){
 						//console.log(results);
+						var results = msg.comments;
 						var commentsList = that.parent().parent().find('.comments-list').first();
 						commentsList.empty();
 						that.parent().parent().parent().find('.comments-count').first().text(' ' + results.length + '条评论');
@@ -33,11 +34,12 @@ $(function() {
 							                    .format('MM/DD/YYYY') ? moment(results[i].date)
 							                    .format('HH:mm:ss'): moment(results[i].date)
 							                    .format('YYYY-MM-DD');
+							var delateHtml = msg.name === results[i].author? ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>': "";
 							if(results[i].reply==''){
 								var _h = '<li>' +
 							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复于: ' +
 							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
-							              ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>' +
+							               delateHtml +
 							            '</p>' +
 										'<p class="comment-body">' + results[i].comment +'</p>' +
 										'<hr>' +
@@ -46,14 +48,14 @@ $(function() {
 								var _h = '<li>' +
 							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复: ' + results[i].reply + ' ' +
 							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
-							              ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>' +
+							              delateHtml +
 							            '</p>' +
 										'<p class="comment-body">' + results[i].comment +'</p>' +
 										'<hr>' +
 							         '</li>';
 							}
 							
-							commentsList.prepend( $(_h) );
+							commentsList.append( $(_h) );
 						}
 						that.parent().parent().find('.write-comment').first().text('');
 						that.parent().parent().find('.write-comment').first().attr('reply-to','');
@@ -78,8 +80,8 @@ $(function() {
 									commentId: $(this).attr('comment-id')
 								};
 								var that = $(this);
-							$.post('/delate-comment/' + $(this).parent().parent().parent().parent().find('.blogId').first().val(), data, function(results){
-								console.log(results);
+							$.post('/delate-comment/' + $(this).parent().parent().parent().parent().find('.blogId').first().val(), data, function(msg){
+								var results = msg.comments;
 								var commentsList = that.parent().parent().parent().parent().find('.comments-list').first();
 						        commentsList.empty();
 						
@@ -91,11 +93,12 @@ $(function() {
 							                    .format('MM/DD/YYYY') ? moment(results[i].date)
 							                    .format('HH:mm:ss'): moment(results[i].date)
 							                    .format('YYYY-MM-DD');
+							var delateHtml = msg.name === results[i].author? ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>': "";
 							if(results[i].reply==''){
 								var _h = '<li>' +
 							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复于: ' +
 							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
-							              ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>' +
+							              delateHtml +
 							            '</p>' +
 										'<p class="comment-body">' + results[i].comment +'</p>' +
 										'<hr>' +
@@ -104,7 +107,7 @@ $(function() {
 								var _h = '<li>' +
 							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复: ' + results[i].reply + ' ' +
 							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
-							              ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>' +
+							              delateHtml +
 							            '</p>' +
 										'<p class="comment-body">' + results[i].comment +'</p>' +
 										'<hr>' +
