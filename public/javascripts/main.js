@@ -7,7 +7,7 @@ window.onload = function(){
 	var hiddenBody = document.getElementById('hidden-body');
 	var textarea = document.getElementById('editor');
 
-	var writeComment = document.getElementsByClassName('textarea');
+	var writeComment = document.getElementsByClassName('write-comment');
 	var showComments = document.getElementsByClassName('show-comments');
 	var commentHeader = document.getElementsByClassName('comment-header');
 	//console.log(showComments);
@@ -28,11 +28,11 @@ window.onload = function(){
 	for(var i = 0; i < writeComment.length; i++){
 		//getLabel(writeComment[i]);
 		writeComment[i].onfocus = function(){
-			var commentWrapper = this.parentNode.getElementsByClassName('comment-wrapper')[0];
-			var closeComment = commentWrapper.getElementsByClassName('close-comment')[0];
-		    commentWrapper.style.display = 'block';
+			var commentWrapper = this.parentNode.getElementsByClassName('comment-wrapper');
+			var closeComment = this.parentNode.getElementsByClassName('close-comment')[0];
+		    commentWrapper[0].style.display = 'block';
 		    closeComment.onclick = function(){
-		    	commentWrapper.style.display = 'none';
+		    	commentWrapper[0].style.display = 'none';
 		    };
 	    };
 	}

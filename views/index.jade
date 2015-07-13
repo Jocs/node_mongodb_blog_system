@@ -110,8 +110,13 @@ block content
                   a(href='javascript:;',role='tag') #{tag}
                 a(href='javascript:;',role='modify') &nbsp;
                   span(class='glyphicon glyphicon-pencil') 修改   
-              p(class='title') #{blog.title} &nbsp;
+              p(class='title',style='display:block') #{blog.title} &nbsp;
                 a(href='javascript:;',role='modify'): span(class='glyphicon glyphicon-pencil') 修改&nbsp;
+              div(class='title-modify',style='display:none')
+                div(class='cancel-modify')
+                  a 取消
+                textarea(class='title-modify-content textarea') #{blog.title}
+                button(class='btn btn-primary') 保存
               if (blog.voter.length == 0)
                 p(class='voter') 还没有人赞同
               else if (blog.voter.length == 1)
@@ -135,7 +140,7 @@ block content
                   span(class='comments-count',style='display:inline-block')  &nbsp;#{blog.comments.length}条评论
                   span(class='hidden-comments',style='display:none')  收起评论
                 a(href='javascript:;',role='modify') &nbsp;
-                  span(class='glyphicon glyphicon-pencil') 修改
+                  span(class='glyphicon glyphicon-pencil') 文章修改
               div(class='get-comments',style='display:none')
                 span(class='arrow')
                 ul(class='comments-list')
@@ -169,7 +174,7 @@ block content
                 div(contenteditable=true,aria-label='写下你的评论...',class='textarea write-comment',reply-to='')
                 input(type='hidden',name='author',value=me.name.full,class='comment-author')
                 input(type='hidden',value=blog._id,class='blogId')
-                div(class='comment-wrapper')
+                div(class='comment-wrapper',style='display:none')
                   div(class='form-group')
                     label 匿名发表: &nbsp;
                     input(type='checkBox',name='hidden',class='comment-hidden')

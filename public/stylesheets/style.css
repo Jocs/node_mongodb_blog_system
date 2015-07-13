@@ -390,6 +390,36 @@ input[type='submit']{
 	bottom: 10px;
 	color:#888;
 }
+/*文章修改部分的css*/
+#body-left .title-modify{
+	width:100%;
+	height: 40px;
+	border-radius: 5px;
+	position: relative;
+	margin-bottom: 10px;
+}
+#body-left .title-modify .cancel-modify{
+	position: absolute;
+	right:66px;
+	bottom:10px;
+	font-size: 14px;
+	cursor: pointer;
+	text-decoration: none;
+}
+#body-left .title-modify .textarea{
+	width:100%;
+	height: 40px;
+	padding: 10px;
+	padding-right: 50px;
+	border-radius: 5px;
+	border:1px solid silver;
+}
+#body-left .title-modify button{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	height: 40px;
+}
 
 
 

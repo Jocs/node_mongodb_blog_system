@@ -64,6 +64,7 @@ $(function() {
 				});
 				
 				function replyEvent(){
+					//delegate可以未来的元素添加事件
 					$('.comments-list').delegate("a", "click", function(e){
 					
 						if(~(e.target.className.indexOf('reply'))){
@@ -146,6 +147,31 @@ $(function() {
 						that.parent().parent().find('.voter').first().text(_text);
 					});
 				});
+
+				$('.title').delegate('a','click',function(e){
+					$(this).parent().css('display','none');
+					$(this).parent().parent().find('.title-modify').first().css('display','block');
+				});
+				$('.title-modify a').click(function(e){
+					$(this).parent().parent().parent().find('.title').first().css('display','block');
+					$(this).parent().parent().css('display','none');
+				});
+				//点击修改文章标题
+				$('.title-modify button').click(function(e){
+					var data = {
+						title: $(this).parent().find('.textarea').first().val()
+					};
+					var that = $(this);
+					$.post('/title_modify/' + $(this).parent().parent().attr('special_id'), data, function(msg){
+						console.log(msg);
+						that.parent().find('.textarea').first().val(msg.title);
+						that.parent().css('display','none');
+						that.parent().parent().find('.title').first().html(msg.title);
+						that.parent().parent().find('.title').first().css('display','block');
+						that.parent().parent().find('.title').first().append('<a href="javascript:;" role="modify"><span class="glyphicon glyphicon-pencil">修改<span></a>');
+					});
+				});
+
 			});
 
 
