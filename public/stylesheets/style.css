@@ -420,6 +420,32 @@ input[type='submit']{
 	bottom: 0;
 	height: 40px;
 }
+/*添加和删除标签的css*/
+#body-left .tags{
+	display: inline-block;
+}
+#body-left .tags span:hover{
+	color: orange;
+}
+#body-left .tag-modify{
+	width:150px;
+	display: inline-block;
+	position: relative;
+}
+#body-left .tag-modify input{
+	border-radius: 30px;
+}
+#body-left .tag-modify a{
+	display: inline-block;
+	width:33px;
+	height: 33px;
+	position: absolute;
+	right:0;
+	top:0;
+	font-size: 24px;
+	text-align: center;
+	line-height: 38px;
+}
 
 
 

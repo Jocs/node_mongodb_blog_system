@@ -107,9 +107,16 @@ block content
                   span(class='glyphicon glyphicon-menu-down')
               p(class='tags')
                 each tag in blog.tags
-                  a(href='javascript:;',role='tag') #{tag}
-                a(href='javascript:;',role='modify') &nbsp;
-                  span(class='glyphicon glyphicon-pencil') 修改   
+                  a(href='javascript:;',role='tag',tag-name=tag) #{tag}&nbsp;
+                    span(class='glyphicon glyphicon-remove hidden')
+              div(class='tag-modify hidden')
+                input(class='form-control')
+                a(href='javascript:;',class='tag-modify-add'): span(class='glyphicon glyphicon-plus-sign')
+              a(href='javascript:;',role='modify',class='tag-modify-ct') &nbsp;
+                span(class='glyphicon glyphicon-pencil') 修改  
+              div(class = 'text-warning text-center hidden',role='tag-error')
+                span(class='glyphicon glyphicon-exclamation-sign',style='display:inline-block') &nbsp;
+                p(style='display:inline-block') 
               p(class='title',style='display:block') #{blog.title} &nbsp;
                 a(href='javascript:;',role='modify'): span(class='glyphicon glyphicon-pencil') 修改&nbsp;
               div(class='title-modify',style='display:none')

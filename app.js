@@ -20,6 +20,8 @@ var post_comment = require('./routes/post_comment');
 var post_vote = require('./routes/post_vote');
 var post_delate_comment = require('./routes/post_delate_comment');
 var post_title_modify = require('./routes/post_title_modify');
+var post_tag_delete = require('./routes/post_tag_delete');
+var post_tag_add = require('./routes/post_add_tag');
 
 var app = express();
 app.locals.moment = require('moment');
@@ -77,6 +79,8 @@ app.use('/',post_comment);
 app.use('/', post_vote);
 app.use('/', post_delate_comment);
 app.use('/', post_title_modify);
+app.use('/', post_tag_delete);
+app.use('/', post_tag_add);
 
 
 

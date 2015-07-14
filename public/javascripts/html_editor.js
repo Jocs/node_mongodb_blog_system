@@ -147,7 +147,7 @@ $(function() {
 						that.parent().parent().find('.voter').first().text(_text);
 					});
 				});
-
+				//delegate能够为未来添加的元素添加事件
 				$('.title').delegate('a','click',function(e){
 					$(this).parent().css('display','none');
 					$(this).parent().parent().find('.title-modify').first().css('display','block');
@@ -156,7 +156,7 @@ $(function() {
 					$(this).parent().parent().parent().find('.title').first().css('display','block');
 					$(this).parent().parent().css('display','none');
 				});
-				//点击修改文章标题
+				//点击修改文章标题Ajax
 				$('.title-modify button').click(function(e){
 					var data = {
 						title: $(this).parent().find('.textarea').first().val()
@@ -170,6 +170,80 @@ $(function() {
 						that.parent().parent().find('.title').first().css('display','block');
 						that.parent().parent().find('.title').first().append('<a href="javascript:;" role="modify"><span class="glyphicon glyphicon-pencil">修改<span></a>');
 					});
+				});
+
+				//标签添加和修改的前端交互体验
+				$('.single-blog .tag-modify-ct').click(function(e){
+					var addTag = $(this).parent().find('.tag-modify').first();
+					var tags = $(this).parent().find('.tags span');
+					var aTags = $(this).parent().find('a[role="tag"]');
+					if(addTag.hasClass('hidden')){
+						$(this).html(' <span class="glyphicon glyphicon-ok">完成</span>');
+						addTag.removeClass('hidden');
+						tags.removeClass('hidden');
+						aTags.removeAttr('href');
+						tags.css('cursor','pointer');
+					} else {
+						$(this).html(' <span class="glyphicon glyphicon-pencil">修改</span>');
+						addTag.find('input').first().focus();
+						addTag.addClass('hidden');
+						tags.addClass('hidden');
+						aTags.attr('href','javascript:;');
+						tags.css('cursor','auto');
+					}
+				});
+
+				//通过ajax删除标签，通过把标签的tag－name发送回服务器，服务器成功删除该标签后返回一个｛delete：true｝的对象
+				$('.single-blog .tags').delegate('span','click',function(e){
+					var data = {
+						tag: $(this).parent().attr('tag-name')
+					};
+					var that = $(this);
+					$.post('/tag_delete/'+ $(this).parent().parent().parent().attr('special_id'),data,function(msg){
+						console.log(msg);
+						if(msg.delete && msg.delete === true){
+							that.parent().remove();
+						} else {
+							alert('服务器故障，未能够删除标签，请刷新后重新删除！');
+						}
+					});
+				});
+				//通过ajax实现添加tag功能。pust
+				$('.single-blog .tag-modify a').click(function(e){
+					var input = $(this).parent().find('input').first();
+					var data = {
+						tag: input.val()
+					};
+					var that = $(this);
+					var length = $(this).parent().parent().find('a[role="tag"]').length;
+					var tagWarning = that.parent().parent().find('div[role="tag-error"]').first();
+
+					input.focus(function(e){
+						tagWarning.addClass('hidden');
+					});
+
+					if(data.tag !== ''&&length < 5){
+						$.post('/tag_add/' + $(this).parent().parent().attr('special_id'),data,function(msg){
+							if(msg.tag){
+								var _h = '<a role="tag" tag-name="' + msg.tag + '">' + msg.tag + ' <span class="glyphicon glyphicon-remove"></span></a>';
+								that.parent().parent().find('.tags').first().append(_h);
+							} else if(msg.add){
+								tagWarning.removeClass('hidden');
+								tagWarning.find('p').first().text(msg.add);
+								//console.log(msg.add);
+								//input.val(msg.add);
+							}		
+						});
+					} else if(data.tag == '') {
+						
+						tagWarning.removeClass('hidden');
+						tagWarning.find('p').first().text('标签不能为空');
+						//input.attr('placeholder','标签不能为空');
+					} else if(length >= 5){
+						tagWarning.removeClass('hidden');
+						tagWarning.find('p').first().text('标签不能超过5个');
+						//input.val('标签不能超过5个');
+					}
 				});
 
 			});
