@@ -114,9 +114,10 @@ block content
                 a(href='javascript:;',class='tag-modify-add'): span(class='glyphicon glyphicon-plus-sign')
               a(href='javascript:;',role='modify',class='tag-modify-ct') &nbsp;
                 span(class='glyphicon glyphicon-pencil') 修改  
-              div(class = 'text-warning text-center hidden',role='tag-error')
-                span(class='glyphicon glyphicon-exclamation-sign',style='display:inline-block') &nbsp;
-                p(style='display:inline-block') 
+              div(class = 'text-warning hidden',role='tag-error')
+                div(class='tag-error-inner')
+                  span(class='glyphicon glyphicon-exclamation-sign',style='display:inline-block') &nbsp;
+                  p(style='display:inline-block') 
               p(class='title',style='display:block') #{blog.title} &nbsp;
                 a(href='javascript:;',role='modify'): span(class='glyphicon glyphicon-pencil') 修改&nbsp;
               div(class='title-modify',style='display:none')

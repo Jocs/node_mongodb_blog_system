@@ -222,26 +222,30 @@ $(function() {
 						tagWarning.addClass('hidden');
 					});
 
+					function showTagError(e, msg){
+						var left = input.parent().position().left;
+						e.removeClass('hidden');
+						e.find('p').first().text(msg);
+						e.find('.tag-error-inner').first().css('left',left + 'px');
+					}
+
 					if(data.tag !== ''&&length < 5){
 						$.post('/tag_add/' + $(this).parent().parent().attr('special_id'),data,function(msg){
 							if(msg.tag){
 								var _h = '<a role="tag" tag-name="' + msg.tag + '">' + msg.tag + ' <span class="glyphicon glyphicon-remove"></span></a>';
 								that.parent().parent().find('.tags').first().append(_h);
 							} else if(msg.add){
-								tagWarning.removeClass('hidden');
-								tagWarning.find('p').first().text(msg.add);
+								showTagError(tagWarning,msg.add);
 								//console.log(msg.add);
 								//input.val(msg.add);
 							}		
 						});
 					} else if(data.tag == '') {
 						
-						tagWarning.removeClass('hidden');
-						tagWarning.find('p').first().text('标签不能为空');
+						showTagError(tagWarning,'标签不能为空');
 						//input.attr('placeholder','标签不能为空');
 					} else if(length >= 5){
-						tagWarning.removeClass('hidden');
-						tagWarning.find('p').first().text('标签不能超过5个');
+						showTagError(tagWarning, '标签不能超过5个');
 						//input.val('标签不能超过5个');
 					}
 				});
