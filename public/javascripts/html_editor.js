@@ -12,6 +12,7 @@ $(function() {
 					}
 					
 				});
+				//发表评论功能
 				$('.post-comment').click(function(e){
 					var data = {
 						author:$(this).parent().parent().find('.comment-author').first().val(), 
@@ -81,6 +82,7 @@ $(function() {
 									commentId: $(this).attr('comment-id')
 								};
 								var that = $(this);
+							//删除评论功能
 							$.post('/delate-comment/' + $(this).parent().parent().parent().parent().find('.blogId').first().val(), data, function(msg){
 								var results = msg.comments;
 								var commentsList = that.parent().parent().parent().parent().find('.comments-list').first();
@@ -124,7 +126,7 @@ $(function() {
 				}
 
 				replyEvent();
-
+				//点赞投票功能的实现。
 				$('.vote button').click(function( e ){
 					var data = {
 						userName: $(this).parent('.vote').first().attr('user-name'),
@@ -169,6 +171,7 @@ $(function() {
 						that.parent().parent().find('.title').first().html(msg.title);
 						that.parent().parent().find('.title').first().css('display','block');
 						that.parent().parent().find('.title').first().append('<a href="javascript:;" role="modify"><span class="glyphicon glyphicon-pencil">修改<span></a>');
+						that.parent().parent().find('.date-updateAt').first().html(moment().format('HH:mm:ss') + ' ');
 					});
 				});
 
@@ -199,10 +202,12 @@ $(function() {
 						tag: $(this).parent().attr('tag-name')
 					};
 					var that = $(this);
+					var dateUpdate = $(this).parent().parent().parent().find('.date-updateAt').first();
 					$.post('/tag_delete/'+ $(this).parent().parent().parent().attr('special_id'),data,function(msg){
 						console.log(msg);
 						if(msg.delete && msg.delete === true){
 							that.parent().remove();
+							dateUpdate.html(moment().format('HH:mm:ss') + ' ');
 						} else {
 							alert('服务器故障，未能够删除标签，请刷新后重新删除！');
 						}
@@ -234,6 +239,7 @@ $(function() {
 							if(msg.tag){
 								var _h = '<a role="tag" tag-name="' + msg.tag + '">' + msg.tag + ' <span class="glyphicon glyphicon-remove"></span></a>';
 								that.parent().parent().find('.tags').first().append(_h);
+								that.parent().parent().find('.date-updateAt').first().html(moment().format('HH:mm:ss') + ' ');
 							} else if(msg.add){
 								showTagError(tagWarning,msg.add);
 								//console.log(msg.add);
@@ -249,6 +255,68 @@ $(function() {
 						//input.val('标签不能超过5个');
 					}
 				});
+				//修改文章的前端交互呈现，点击“修改文章”按钮，文章变成可修改状态，
+				//div（class='content'）元素中增加“contenteditable”特性和增加
+				//class属性值content-edit。
+				$('#body-left .content-modify').click(function( e ){
+					var content = $(this).parent().parent().find('.content').first();
+					var contentControl = $(this).parent().parent().find('.content-modify-control').first();
+					var content_html = content.html();
+					var cancel = contentControl.find('a').first();
+					var button = contentControl.find('button').first();
+					var that = $(this);
+					var blogId = $(this).parent().parent().attr('special_id');
+					var dateUpdate = $(this).parent().parent().find('.date-updateAt').first();
+
+					$(this).addClass('hidden');
+					content.addClass('content-edit');
+					content.attr('contenteditable',true);
+					contentControl.removeClass('hidden');
+
+					cancel.click(function(e){
+						content.html(content_html);
+						that.removeClass('hidden');
+						content.removeClass('content-edit');
+						content.removeAttr('contenteditable');
+						contentControl.addClass('hidden');
+					});
+					//通过Ajax把更新后的文章内容发送回服务器，服务器进行存储，并把更新后的文章内容返回回来。
+					//客户端接收到返回的文章内容，更新content元素的html。
+					button.click(function( e ){
+						var data = {
+							content: content.html()
+						};
+						$.post('/content_modify/' + blogId, data, function(msg){
+							content.html(msg.content);
+						    that.removeClass('hidden');
+						    content.removeClass('content-edit');
+						    content.removeAttr('contenteditable');
+						    contentControl.addClass('hidden');
+						    dateUpdate.html(moment().format('HH:mm:ss') + ' ');
+						});
+					});
+
+				});
+				//关注文章功能实现
+				$('.watch').click(function(e){
+					var data = {
+						watcher: $('#profile').attr('my-name')
+					};
+					var blogId = $(this).parents('.single-blog').first().attr('special_id');
+					var that = $(this);
+
+					$.post('/watch/' + blogId, data, function(msg){
+						console.log(msg.watch);
+						if(msg.watch){
+							var _html = ' <span class="glyphicon glyphicon-heart"></span>取消关注';
+							that.html(_html);
+						} else {
+							var _html = ' <span class="glyphicon glyphicon-heart-empty"></span>关注文章';
+							that.html(_html);
+						}
+					});
+				});
+
 
 			});
 

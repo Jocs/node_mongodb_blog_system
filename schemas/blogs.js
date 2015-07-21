@@ -24,13 +24,18 @@ var blogSchema = new Schema({
 		updateAt:{
 			type:Date,
 			default: Date.now()
+		},
+		allUpdateAt:{
+			type: Date,
+			default: Date.now()
 		}
 	},
 	hidden: {
 		     type: Boolean,
 	         default:false
 	    },
-	voter: [String]
+	voter: [String],
+	watcher:[String]
 	
 });
 
@@ -39,9 +44,9 @@ var blogSchema = new Schema({
 
 blogSchema.pre('save', function(next){
 	if(this.isNew){
-		this.date.createAt = this.date.updateAt = Date.now();
+		this.date.createAt = this.date.updateAt = this.date.allUpdateAt = Date.now();
 	} else {
-		this.date.updateAt = Date.now();
+		this.date.allUpdateAt = Date.now();
 	}
 	next();
 });

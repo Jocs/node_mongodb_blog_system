@@ -15,6 +15,7 @@ router.post('/tag_delete/:blogId', function(req, res, next) {
 					tags.splice(i, 1);
 				}
 			}
+			blogs[0].date.updateAt = Date.now();
 			blogs[0].save(function(err){
 				if(err) console.log(err);
 				res.send({delete: true});

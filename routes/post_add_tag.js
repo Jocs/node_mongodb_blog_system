@@ -16,6 +16,7 @@ router.post('/tag_add/:blogId', function(req, res, next) {
 			}
 			if(isPush) {
 				tags.push(req.body.tag);
+				blogs[0].date.updateAt = Date.now();
 			    blogs[0].save(function(err){
 				    if(err) console.log(err);
 				    res.send(req.body);

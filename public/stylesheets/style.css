@@ -459,6 +459,30 @@ input[type='submit']{
 	width:150px;
 	display: block;
 }
+/*文章内容修改*/
+#body-left .content-edit{
+	border:1px solid silver;
+	border-radius: 10px;
+	width: 100%;
+	height: 400px;
+	overflow: auto;
+	padding: 1em;
+}
+#body-left .content-modify-control{
+	width: 100%;
+	height: 40px;
+	position: relative;
+}
+#body-left .content-modify-control a{
+	position: absolute;
+	right: 93px;
+	top:12px;
+}
+#body-left .content-modify-control button{
+	position: absolute;
+	right: 16px;
+	top:3px;
+}
 
 
 

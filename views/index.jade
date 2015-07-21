@@ -112,14 +112,16 @@ block content
               div(class='tag-modify hidden')
                 input(class='form-control')
                 a(href='javascript:;',class='tag-modify-add'): span(class='glyphicon glyphicon-plus-sign')
-              a(href='javascript:;',role='modify',class='tag-modify-ct') &nbsp;
-                span(class='glyphicon glyphicon-pencil') 修改  
+              if (blog.author == me.name.full)
+                a(href='javascript:;',role='modify',class='tag-modify-ct') &nbsp;
+                  span(class='glyphicon glyphicon-pencil') 修改  
               div(class = 'text-warning hidden',role='tag-error')
                 div(class='tag-error-inner')
                   span(class='glyphicon glyphicon-exclamation-sign',style='display:inline-block') &nbsp;
                   p(style='display:inline-block') 
               p(class='title',style='display:block') #{blog.title} &nbsp;
-                a(href='javascript:;',role='modify'): span(class='glyphicon glyphicon-pencil') 修改&nbsp;
+                if (blog.author == me.name.full)
+                  a(href='javascript:;',role='modify'): span(class='glyphicon glyphicon-pencil') 修改&nbsp;
               div(class='title-modify',style='display:none')
                 div(class='cancel-modify')
                   a 取消
@@ -133,22 +135,32 @@ block content
                 p(class='voter') #{blog.voter[0]},#{blog.voter[1]} 两人赞同
               else
                 p(class='voter') #{blog.voter[0]},#{blog.voter[1]},#{blog.voter[2]} 等人赞同
-              p(class='content') !{blog.content}
+              div(class='content') !{blog.content}
+              div(class='content-modify-control hidden')
+                a(href='javascript:;') 取消
+                button(class='btn btn-primary') 保存
               p(class='footer')
                 if (blog.hidden)
                   span Blog用户 更新于:&nbsp;
                 else 
                   span #{blog.author} 更新于:&nbsp;
                 if (moment().format('YYYY-MM-DD') === moment(blog.date.updateAt).format('YYYY-MM-DD'))
-                  span #{moment(blog.date.updateAt).format('HH:mm:ss')}&nbsp;&nbsp;
+                  span(class='date-updateAt') #{moment(blog.date.updateAt).format('HH:mm:ss')}&nbsp;&nbsp;
                 else
-                  span #{moment(blog.date.updateAt).format('YYYY-MM-DD')}&nbsp;&nbsp;
+                  span(class='date-updateAt') #{moment(blog.date.updateAt).format('YYYY-MM-DD')}&nbsp;&nbsp;
                 a(href='javascript:void(0)' class='show-comments')
                   span(class='glyphicon glyphicon-edit')
                   span(class='comments-count',style='display:inline-block')  &nbsp;#{blog.comments.length}条评论
                   span(class='hidden-comments',style='display:none')  收起评论
-                a(href='javascript:;',role='modify') &nbsp;
-                  span(class='glyphicon glyphicon-pencil') 文章修改
+                if (blog.author == me.name.full)
+                  a(href='javascript:;',role='modify',class='content-modify') &nbsp;
+                    span(class='glyphicon glyphicon-pencil') 文章修改
+                if (!contains( blog.watcher, me.name.full ))
+                  a(href='javascript:;',role='modify',class='watch') &nbsp;
+                    span(class='glyphicon glyphicon-heart-empty') 关注文章
+                else
+                  a(href='javascript:;',role='modify',class='watch') &nbsp;
+                    span(class='glyphicon glyphicon-heart') 取消关注
               div(class='get-comments',style='display:none')
                 span(class='arrow')
                 ul(class='comments-list')
