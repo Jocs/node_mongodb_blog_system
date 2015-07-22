@@ -94,6 +94,10 @@ input[type='submit']{
 	background: #0767c8;
 	margin: 0;
 	padding: 0;
+	position: fixed;
+	z-index: 20;
+	left: 0;
+	top:0;
 }
 #header #nav{
 	width: 960px;
@@ -227,18 +231,15 @@ input[type='submit']{
 	width:80%;
 	height: auto;
 	margin: 0 auto;
-	padding-top:20px;
+	padding-top:60px;
 	background: #fff;
 }
 #blog-body #body-left{
 	width: 70%;
 	padding:10px;
+	display: inline-block;
 }
-#blog-body #body-right{
-	width: 30%;
-	padding:10px;
-}
-#blog-body #body-left ul{
+#blog-body ul{
 	list-style: none;
 }
 #blog-body #body-left ul li{
@@ -483,6 +484,70 @@ input[type='submit']{
 	right: 16px;
 	top:3px;
 }
+/*blog右边部分的css*/
+#blog-body #body-right{
+	width: 30%;
+	padding:10px;
+	display: inline-block;
+	float: right;
+	position: relative;
+	height: auto;
+}
+#blog-body #body-right #right-fixed{
+	position:fixed;
+	width: 24%;
+	height: auto;
+}
+#blog-body #body-right #right-fixed .small{
+	font-size: 12px;
+	color: #999;
+}
+#blog-body #body-right #right-fixed .right_fixed_inner{
+	margin-bottom: 20px;
+	width: 100%;
+	border-radius: 10px;
+	border: 1px solid #eee;
+	padding: 10px;
+}
+#blog-body #body-right #right-fixed .right_fixed_inner hr{
+	margin:5px 0 5px 0;
+}
+#blog-body #body-right #right-fixed #myCV{
+	background: #eff6fa;
+	position: relative;
+}
+#blog-body #body-right #right-fixed #myCV:hover .close_cv{
+	display: block;
+}
+#blog-body #body-right #right-fixed #myCV .close_cv{
+	position: absolute;
+	right: 8px;
+	top:5px;
+	display: none;
+}
+#blog-body #body-right #right-fixed #myCV h4{
+	text-align: center;
+	color:#444;
+}
+#blog-body #body-right #right-fixed #myCV #download{
+	display: block;
+	width:150px;
+	height: 40px;
+	margin: 0 auto;
+	background: #86b846;
+	color: white;
+	border-radius: 5px;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 40px;
+	text-align: center;
+}
+#blog-body #body-right #right-fixed #myCV #download:hover{
+	background: #4fb746;
+}
+
+
+
 
 
 

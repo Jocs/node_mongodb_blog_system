@@ -1,6 +1,6 @@
 extends layout
 block content 
-  if(authenticated)
+  if (authenticated)
     script(src='javascripts/main.js')
     div(id='header')
       div(id='nav')
@@ -202,6 +202,33 @@ block content
                   button(class='btn btn-primary',class='post-comment') 发表评论
               hr
       div(id='body-right')
+        div(id='right-fixed')
+          div(id='myCV',class='right_fixed_inner') 
+            a(href='javascript:;',class='close_cv'): span(class='glyphicon glyphicon-remove')
+            h4 A freelance web desiger & front-end developer
+            a(href='javascript:;',id='download'): span(class='glyphicon glyphicon-download') Download CV
+          div(id='watcher',class='right_fixed_inner')
+            div
+              span(class='glyphicon glyphicon-heart-empty') &nbsp;
+              strong 关注文章
+            hr
+            ul
+              each article in articles
+                li(special_id=article._id,class='watch_article')
+                  p
+                    a(href='javascript:;'): span #{article.title} &nbsp;
+                    span(class='small') #{article.comments.length} 条评论
+          div(id='most_vote_blogs',class='right_fixed_inner') 
+            div
+                span(class='glyphicon glyphicon-th-list') &nbsp;
+                strong 热门文章
+            hr
+            ul
+              each doc in docs
+                li(special_id=doc._id,class='vote_blog')
+                  p
+                    a(href='javascript:;'): span #{doc.title} &nbsp;
+                    span(class='small') #{doc.voter.length} 人赞同
     script(src="javascripts/jquery.min.js")
     script(src="javascripts/bootstrap.min.js")
     script(src='javascripts/html_editor.js')

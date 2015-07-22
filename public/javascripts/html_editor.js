@@ -316,7 +316,10 @@ $(function() {
 						}
 					});
 				});
-
+				//实现删除CV介绍功能
+				$('#body-right .close_cv').click(function(e){
+					$(this).parent().remove();
+				});
 
 			});
 
