@@ -2,7 +2,7 @@ extends layout
 block content 
   if (authenticated)
     input(type='hidden',id='rooms',value=ids)
-    script(src='javascripts/main.js')
+    script(src='/javascripts/main.js')
     div(id='header')
       div(id='nav')
         ul
@@ -110,7 +110,7 @@ block content
       div(id='body-left') 
         p
           span(class='glyphicon glyphicon-list-alt')
-          strong &nbsp;最新文章
+          strong &nbsp;#{blogs[0].title}
         hr
         ul
           each blog in blogs
@@ -167,8 +167,8 @@ block content
                   span(class='date-updateAt') #{moment(blog.date.updateAt).format('YYYY-MM-DD')}&nbsp;&nbsp;
                 a(href='javascript:void(0)' class='show-comments')
                   span(class='glyphicon glyphicon-edit')
-                  span(class='comments-count',style='display:inline-block')  &nbsp;#{blog.comments.length}条评论
-                  span(class='hidden-comments',style='display:none')  收起评论
+                  span(class='comments-count',style='display:none')  &nbsp;#{blog.comments.length}条评论
+                  span(class='hidden-comments',style='display:inline-block')  收起评论
                 if (blog.author == me.name.full)
                   a(href='javascript:;',role='modify',class='content-modify') &nbsp;
                     span(class='glyphicon glyphicon-pencil') 文章修改
@@ -178,7 +178,7 @@ block content
                 else
                   a(href='javascript:;',role='modify',class='watch') &nbsp;
                     span(class='glyphicon glyphicon-heart') 取消关注
-              div(class='get-comments',style='display:none')
+              div(class='get-comments')
                 span(class='arrow')
                 ul(class='comments-list')
                   each comment in blog.comments
@@ -238,19 +238,22 @@ block content
           div(id='most_vote_blogs',class='right_fixed_inner') 
             div
                 span(class='glyphicon glyphicon-th-list') &nbsp;
-                strong 热门文章
+                strong 相关文章
             hr
             ul
-              each doc in docs
-                li(special_id=doc._id,class='vote_blog')
-                  p
-                    a(href='/blogs/#{doc._id}',class='single_blog'): span #{doc.title} &nbsp;
-                    span(class='small') #{doc.voter.length} 人赞同
-    script(src="javascripts/jquery.min.js")
-    script(src="javascripts/bootstrap.min.js")
+              if (docs.length==0)
+                p 没有相关文章
+              else
+                each doc in docs
+                  li(special_id=doc._id,class='relate_blog')
+                    p
+                      a(href='/blogs/#{doc._id}',class='single_blog'): span #{doc.title} &nbsp;
+                      span(class='small') #{doc.voter.length} 人赞同
+    script(src="/javascripts/jquery.min.js")
+    script(src="/javascripts/bootstrap.min.js")
     script(src='/socket.io/socket.io.js')
-    script(src='javascripts/socket_client.js')
-    script(src='javascripts/html_editor.js')
+    script(src='/javascripts/socket_client.js')
+    script(src='/javascripts/html_editor.js')
   else
     script(src='./javascripts/login.js')
     div(id='top-header')

@@ -22,6 +22,7 @@ $(function() {
 						date: new Date()
 					};
 					var that = $(this);
+					
 					$.post('/comment/' + $(this).parent().parent().find('.blogId').first().val(), data, function(msg){
 						//console.log(results);
 						var results = msg.comments;
@@ -64,6 +65,7 @@ $(function() {
 					});
 				});
 				
+				//实现回复评论和删除评论功能
 				function replyEvent(){
 					//delegate可以未来的元素添加事件
 					$('.comments-list').delegate("a", "click", function(e){
@@ -320,6 +322,7 @@ $(function() {
 				$('#body-right .close_cv').click(function(e){
 					$(this).parent().remove();
 				});
+				
 
 			});
 

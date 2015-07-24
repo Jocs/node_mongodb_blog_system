@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
+var app = express();
+
 var User = require('./models/users');
 
 var index = require('./routes/index');
@@ -24,6 +26,7 @@ var post_tag_delete = require('./routes/post_tag_delete');
 var post_tag_add = require('./routes/post_add_tag');
 var post_content_modify = require('./routes/post_content_modify');
 var post_watcher = require('./routes/post_watcher');
+var get_single = require('./routes/get_single');
 
 //引入自定义方法contains，用来判断一个元素是否是数组的某个元素。contains(array, element);
 //如果包含就返回true，不包含返回false。
@@ -32,7 +35,6 @@ var contains = require('./methods/array_contains');
 /*var a = [1,2,3,4,5];
 console.log(contains(a, 6) + ' test');*/
 
-var app = express();
 //把特定方法引入视图层
 app.locals.moment = require('moment');
 app.locals.contains = contains;
@@ -94,6 +96,7 @@ app.use('/', post_tag_delete);
 app.use('/', post_tag_add);
 app.use('/', post_content_modify);
 app.use('/', post_watcher);
+app.use('/', get_single);
 
 
 

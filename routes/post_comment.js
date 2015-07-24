@@ -4,9 +4,9 @@ var Blogs = require('../models/blogs');
 
 /* GET home page. */
 router.post('/comment/:blogId', function(req, res, next) {
-	console.log(req.body);
+	//console.log(req.body);
 	Blogs.findById(req.params.blogId, function(err, blog){
-		console.log(blog);
+		//console.log(blog);
 		if(err){
 			console.log(err);
 		} else {

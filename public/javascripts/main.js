@@ -10,6 +10,7 @@ window.onload = function(){
 	var writeComment = document.getElementsByClassName('write-comment');
 	var showComments = document.getElementsByClassName('show-comments');
 	var commentHeader = document.getElementsByClassName('comment-header');
+
 	//console.log(showComments);
 
 	genArticle.onclick = function(){

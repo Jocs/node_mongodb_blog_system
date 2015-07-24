@@ -2,22 +2,10 @@ var express = require('express');
 var router = express.Router();
 var Blogs = require('../models/blogs');
 
-//把返回的文章按点赞数量进行排序的方法
-function compare( array ){
-			for(var i = 0; i < array.length; i ++){
-				for(var j = 0; j < array.length - i -1; j ++){
-					if(array[j].voter.length < array[j + 1].voter.length){
-						var swap = array[j];
-						array[j] = array[j+1];
-						array[j+1] = swap;
-					}
-				}
-			}
-		}
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-	Blogs.fetch(function(err, blogs){
+/* GET single page. */
+router.get('/blogs/:blogId', function(req, res, next) {
+	Blogs.findById(req.params.blogId,function(err, blogs){
 		if(err){
 			console.log(err);
 		} else {
@@ -29,18 +17,24 @@ router.get('/', function(req, res, next) {
 				if(err) {
 					console.log(err);
 				} else {
-					Blogs.findMostVote(5,
-						function(err,docs){
+					Blogs.where('tags').in(blogs[0].tags)
+						 .where('_id').ne(blogs[0]._id)
+					     .skip(0)
+					     .limit(5)
+					     .select('title voter')
+					     .sort('-date.allUpdateAt')
+					     .exec(function(err,docs){
+						//console.log(docs);
 						if(err) console.log(err);
-						compare(docs);
 						var art = articles.slice(0,5);
 						var array = [];
 						articles.forEach(function(ele){
 							array.push(ele._id);
 						});
 						var ids = array.join(',');
+						
 						//console.log(ids);
-						res.render('index', {blogs: blogs,
+						res.render('single', {blogs: blogs,
 						                      articles: art,
 						                      docs: docs,
 						                      ids:ids});
