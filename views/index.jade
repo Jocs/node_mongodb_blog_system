@@ -90,7 +90,7 @@ block content
             div(class='form-group')
               label(for='hidden') 匿名发布:&nbsp;
               input(type='checkBox',name='hidden',id='hidden')
-            button(type='submit',class='btn btn-primary') 
+            button(type='submit',class='btn btn-primary') 发布
     div(id='inform_arrow')
         a(href='javascript:;')
           span(class='glyphicon glyphicon-menu-left')
@@ -112,7 +112,7 @@ block content
           span(class='glyphicon glyphicon-list-alt')
           strong &nbsp;最新文章
         hr
-        ul
+        ul(id='render_blogs')
           each blog in blogs
             li(special_id=blog._id,class='single-blog')
               div(class='vote',blog-id=blog._id,user-name=me.name.full)
@@ -218,6 +218,7 @@ block content
                   a(href='javascript:void(0)',class='close-comment') 取消
                   button(class='btn btn-primary',class='post-comment') 发表评论
               hr
+        a(href='javascript:;',id='get_10') 更多
       div(id='body-right')
         div(id='right-fixed')
           div(id='myCV',class='right_fixed_inner') 

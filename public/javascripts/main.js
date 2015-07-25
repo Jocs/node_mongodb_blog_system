@@ -7,9 +7,9 @@ window.onload = function(){
 	var hiddenBody = document.getElementById('hidden-body');
 	var textarea = document.getElementById('editor');
 
-	var writeComment = document.getElementsByClassName('write-comment');
-	var showComments = document.getElementsByClassName('show-comments');
-	var commentHeader = document.getElementsByClassName('comment-header');
+	/*var writeComment = document.getElementsByClassName('write-comment');*/
+	/*var showComments = document.getElementsByClassName('show-comments');
+	var commentHeader = document.getElementsByClassName('comment-header');*/
 
 	//console.log(showComments);
 
@@ -26,7 +26,7 @@ window.onload = function(){
 		hiddenBody.value = _html;
 	};
 //以下进行了修改，一篇文章只能有一个id属性。
-	for(var i = 0; i < writeComment.length; i++){
+	/*for(var i = 0; i < writeComment.length; i++){
 		//getLabel(writeComment[i]);
 		writeComment[i].onfocus = function(){
 			var commentWrapper = this.parentNode.getElementsByClassName('comment-wrapper');
@@ -36,8 +36,8 @@ window.onload = function(){
 		    	commentWrapper[0].style.display = 'none';
 		    };
 	    };
-	}
-	for(var i = 0; i < showComments.length; i ++){
+	}*/
+	/*for(var i = 0; i < showComments.length; i ++){
 		showComments[i].onclick = function(){
 			//console.log(showComments[i]);
 			var getComments = this.parentNode.nextSibling;
@@ -53,7 +53,7 @@ window.onload = function(){
 			hiddenComments.style.display = 'none';
 		    }
 	    };
-	}
+	}*/
 
 	/*for(var i = 0; i < commentHeader.length; i ++){
 		commentHeader[i].getElementsByTagName('a')[0].onclick = function(){

@@ -112,7 +112,7 @@ block content
           span(class='glyphicon glyphicon-list-alt')
           strong &nbsp;#{blogs[0].title}
         hr
-        ul
+        ul(id='render_blogs')
           each blog in blogs
             li(special_id=blog._id,class='single-blog')
               div(class='vote',blog-id=blog._id,user-name=me.name.full)

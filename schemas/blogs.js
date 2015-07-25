@@ -60,12 +60,6 @@ blogSchema.statics = {
 	findById: function( id, cb ){
 		return this.find({_id: id})
 				   .exec( cb );
-	},
-	findMostVote: function(limit, cb){
-		var query =  this.find({});
-		    query.limit(limit);
-		    query.exec(cb);
-		    return query;
 	}
 };
 

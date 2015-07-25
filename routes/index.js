@@ -21,6 +21,7 @@ router.get('/', function(req, res, next) {
 		if(err){
 			console.log(err);
 		} else {
+			req.session.blogs = blogs;
 			Blogs.find({watcher:req.session.name},
 				{title:1,comments:1},
 				{skip:0,sort:{'date.allUpdateAt':-1}},
@@ -29,20 +30,22 @@ router.get('/', function(req, res, next) {
 				if(err) {
 					console.log(err);
 				} else {
-					Blogs.findMostVote(5,
+					Blogs.find({},
 						function(err,docs){
 						if(err) console.log(err);
 						compare(docs);
+						var docs5 = docs.slice(0,5);
 						var art = articles.slice(0,5);
+						var blogs10 = blogs.slice(0,10);
 						var array = [];
 						articles.forEach(function(ele){
 							array.push(ele._id);
 						});
 						var ids = array.join(',');
 						//console.log(ids);
-						res.render('index', {blogs: blogs,
+						res.render('index', {blogs: blogs10,
 						                      articles: art,
-						                      docs: docs,
+						                      docs: docs5,
 						                      ids:ids});
 					});	
 				}

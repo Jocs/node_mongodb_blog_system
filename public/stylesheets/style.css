@@ -211,7 +211,7 @@ input[type='submit']{
 #post-blog #blog-form #blog-form-body .btn-primary{
 	position: absolute;
 	right: 10px;
-	bottom: 10px;
+	bottom: 17px;
 	width: 70px;
 }
 #post-blog #blog-form #blog-form-body label{
@@ -625,6 +625,22 @@ input[type='submit']{
 	line-height: 14px;
 	border-radius: 5px;
 	background: #ddd;
+}
+/*GET 10*/
+#get_10{
+	display: block;
+	width:100%;
+	height: 35px;
+	color:#999;
+	text-align: center;
+	line-height: 35px;
+	background: #eee;
+	border-radius: 5px;
+	margin-bottom: 40px;
+}
+#get_10:hover{
+	background: #ddd;
+	color:#333;
 }
 
 
