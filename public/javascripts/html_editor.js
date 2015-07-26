@@ -390,18 +390,25 @@ $(function() {
 					var that = $(this);
 					//console.log(blogUl);
 					$.post('/get_10',data,function(msg){
-						console.log(msg);
+						//console.log(msg);
 						if(msg!=''){
 							blogUl.append(msg);
 							//contenteditable='contenteditable'改为contenteditable
 							blogUl.find('.write-comment').attr('contenteditable',true);
+							translateToSvg();
 						} else {
 							that.html('没有更多');
 							that.unbind('click');
 						}	
 					});
 				});
-				
+				//通过Ajax对span.arrow进行替换，用svg来替换span.arrow
+				function translateToSvg(){
+					$.get('/span_to_svg',function(msg){
+						$('.arrow').after(msg).remove();
+					});	
+				}
+				translateToSvg();
 
 			});
 

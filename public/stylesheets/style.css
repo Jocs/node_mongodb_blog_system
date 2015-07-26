@@ -355,6 +355,12 @@ input[type='submit']{
     border-color:transparent transparent #ddd transparent;
     border-width: 0px 10px 10px 10px;
 }
+#blog-body #body-left .get-comments .arrow_svg{
+	display: block;
+	position: absolute;
+	top:-10px;
+	left:150px;
+}
 #blog-body #body-left .get-comments .comment-header{
 	margin: 0;
 	font-size: 12px;
@@ -568,6 +574,32 @@ input[type='submit']{
 	top:60px;
 	right:0px;
 	font-size: 30px;
+}
+#inform_arrow a{
+	display: block;
+	width:30px;
+	height: 36px;
+	overflow: hidden;
+}
+#inform_arrow a:hover #inform_two_arrow{
+	animation:mymove 1s linear infinite;
+    -webkit-animation:mymove linear 1s infinite;
+    background: #eee;
+}
+#inform_arrow #inform_two_arrow{
+	width: 60px;
+	height: 36px;
+	margin-bottom: 0;
+	position: relative;
+}
+@keyframes mymove{
+	from {right:0px;}
+    to {right:30px;}
+}
+@-webkit-keyframes mymove
+{
+from {right:0px;}
+to {right:30px;}
 }
 #inform h2{
 	font-size: 14px;

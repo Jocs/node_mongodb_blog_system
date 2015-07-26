@@ -28,6 +28,7 @@ var post_content_modify = require('./routes/post_content_modify');
 var post_watcher = require('./routes/post_watcher');
 var get_single = require('./routes/get_single');
 var post_get_10 = require('./routes/post_get_10');
+var span_to_svg = require('./routes/span_to_svg');
 
 //引入自定义方法contains，用来判断一个元素是否是数组的某个元素。contains(array, element);
 //如果包含就返回true，不包含返回false。
@@ -99,7 +100,7 @@ app.use('/', post_content_modify);
 app.use('/', post_watcher);
 app.use('/', get_single);
 app.use('/', post_get_10);
-
+app.use('/', span_to_svg);
 
 
 // catch 404 and forward to error handler
