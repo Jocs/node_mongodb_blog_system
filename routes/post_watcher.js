@@ -11,7 +11,7 @@ router.post('/watch/:blogId', function(req, res, next) {
 		var watchers = blogs[0].watcher;
 		var isContain = contains(watchers, req.body.watcher);
 		var condition = {_id: req.params.blogId};
-		var update = {'$pull':{'watcher': req.body.watcher}};
+
 		if( isContain ){
 			var update = {'$pull':{'watcher': req.body.watcher}};
 			Blogs.update(condition, update,function(err){

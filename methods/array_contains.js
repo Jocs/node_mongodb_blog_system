@@ -1,7 +1,7 @@
 function contains( array, element ){
 	var isContain = false;
 	for(var i = 0; i < array.length; i ++){
-		if( array[i] == element ){
+		if( array[i].toString() == element ){
 			isContain = true;
 		} 
 	}

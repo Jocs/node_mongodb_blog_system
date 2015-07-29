@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Users = require('../models/users');
+var User = require('../models/users');
 
 var commentsSchema = new Schema({
 	author: String,
@@ -34,8 +34,8 @@ var blogSchema = new Schema({
 		     type: Boolean,
 	         default:false
 	    },
-	voter: [String],
-	watcher:[String]
+	voter: [{type:Schema.Types.ObjectId, ref: 'user'}],
+	watcher:[{type:Schema.Types.ObjectId, ref: 'user'}]
 	
 });
 

@@ -17,7 +17,7 @@ block content
           li(id='home-page'): a(href='/') 主页
           li: a(href='/profile') 个人页面
           li: a(href='#',id='generate-article') 发布文章   
-          li(id='profile',my-name=me.name.full)
+          li(id='profile',my-name=me.name.full,my-id=me._id)
             p #{me.name.full} &nbsp;&nbsp;
               a(href="/logout",id='logout')
                 span(class='glyphicon glyphicon-off') 
@@ -34,7 +34,7 @@ block content
           form(method='POST',action='/post')
             input(type='hidden',name='author',value=me.name.full)
             div(class='form-group')
-              input(type='text',name='title',class='form-control',placeholder='文章标题')
+              input(required,maxlength='40',type='text',name='title',class='form-control',placeholder='文章标题不能为空')
             div(class='form-group',id='editparent')
               div(id='editControls',class='span9',style='padding:5px')
                 div(class='btn-group')
@@ -84,13 +84,13 @@ block content
               div(id='editor',class='span9',contenteditable)
             input(type='hidden',name='content',id='hidden-body')
             div(class='form-group')
-              label(class='control-label') 标签:
-                span(id='label-explain') &nbsp;&nbsp;&nbsp;&nbsp;标签内容尽量与文章内容相关,这样更容易被搜索到,并且使用"空格"隔开
-              input(type='text',name='tags',class='form-control',placeholder='填写标签用"空格"隔开')
+              label(class='control-label',id='push_label') 
+                span(id='label-explain') 标签:&nbsp;标签内容尽量与文章内容相关,这样更容易被搜索到,并且使用"空格"隔开
+              input(required,type='text',name='tags',class='form-control',placeholder='填写标签用"空格"隔开')
             div(class='form-group')
               label(for='hidden') 匿名发布:&nbsp;
               input(type='checkBox',name='hidden',id='hidden')
-            button(type='submit',class='btn btn-primary') 发布
+            a(href='javascript:;',class='btn btn-primary',id='push_blog') 发布
     div(id='inform_arrow')
         a(href='javascript:;')
           p(id='inform_two_arrow')
@@ -117,7 +117,7 @@ block content
         ul(id='render_blogs')
           each blog in blogs
             li(special_id=blog._id,class='single-blog')
-              div(class='vote',blog-id=blog._id,user-name=me.name.full)
+              div(class='vote',blog-id=blog._id,user-id=me._id)
                 button(class='up',title='感谢作者',data-role='up')
                   span(class='glyphicon glyphicon-menu-up')
                   p #{blog.voter.length}
@@ -149,11 +149,11 @@ block content
               if (blog.voter.length == 0)
                 p(class='voter') 还没有人赞同
               else if (blog.voter.length == 1)
-                p(class='voter') #{blog.voter[0]} 赞同
+                p(class='voter') #{blog.voter[0].name.full} 赞同
               else if (blog.voter.length == 2)
-                p(class='voter') #{blog.voter[0]},#{blog.voter[1]} 两人赞同
+                p(class='voter') #{blog.voter[0].name.full},#{blog.voter[1].name.full} 两人赞同
               else
-                p(class='voter') #{blog.voter[0]},#{blog.voter[1]},#{blog.voter[2]} 等人赞同
+                p(class='voter') #{blog.voter[0].name.full},#{blog.voter[1].name.full},#{blog.voter[2].name.full} 等人赞同
               div(class='content') !{blog.content}
               div(class='content-modify-control hidden')
                 a(href='javascript:;') 取消
@@ -174,7 +174,7 @@ block content
                 if (blog.author == me.name.full)
                   a(href='javascript:;',role='modify',class='content-modify') &nbsp;
                     span(class='glyphicon glyphicon-pencil') 文章修改
-                if (!contains( blog.watcher, me.name.full ))
+                if (!contains( blog.watcher, me._id ))
                   a(href='javascript:;',role='modify',class='watch') &nbsp;
                     span(class='glyphicon glyphicon-heart-empty') 关注文章
                 else
@@ -226,7 +226,7 @@ block content
           div(id='myCV',class='right_fixed_inner') 
             a(href='javascript:;',class='close_cv'): span(class='glyphicon glyphicon-remove')
             h4 A freelance web desiger and front-end developer
-            a(href='javascript:;',id='download'): span(class='glyphicon glyphicon-download') Download CV
+            a(href='/download/luoran_cv.pdf',id='download'): span(class='glyphicon glyphicon-download') Download CV
           div(id='watcher',class='right_fixed_inner')
             div
               span(class='glyphicon glyphicon-heart-empty') &nbsp;
@@ -254,6 +254,7 @@ block content
     script(src='/socket.io/socket.io.js')
     script(src='javascripts/socket_client.js')
     script(src='javascripts/html_editor.js')
+    script(src='./javascripts/form_validate.js')
   else
     script(src='./javascripts/login.js')
     div(id='top-header')
@@ -282,12 +283,15 @@ block content
             input(type='submit',class='form-control',value='登陆Blog')
           form(method='POST', action='/signup',id='signup')
             div(class='form-group')
-              input(type='text',name='name.first',placeholder='姓',class='form-control inline left')
-              input(type='text',name='name.last',placeholder='名',class='form-control inline right')
+              input(required,type='text',name='name.first',placeholder='姓',class='form-control inline left')
+              input(required,type='text',name='name.last',placeholder='名',class='form-control inline right')
             div(class='form-group')
-              input(type='email',name='email',placeholder='输入邮箱地址',class='form-control')
+              input(requered,type='email',name='email',placeholder='输入您的邮箱地址',class='form-control')
             div(class='form-group')
-              input(type='password',name='password',placeholder='输入密码',class='form-control')
-            input(type='submit',class='form-control',value='注册Blog')
+              input(requierd,type='password',name='password',placeholder='输入六位有效密码',class='form-control')
+            ul(class='msg hidden')
+            a(href='javascript:;',class='form-control') 注册Blog
+    script(src="javascripts/jquery.min.js")
+    script(src='./javascripts/form_validate.js')
 
 

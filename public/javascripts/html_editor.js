@@ -53,49 +53,58 @@ $(function() {
 						comment: $(this).parent().parent().find('.write-comment').first().text(),
 						hidden: $(this).parent().parent().find('.comment-hidden').first().is(':checked'),
 						date: new Date()
-					};
-					var that = $(this);
-					
-					$.post('/comment/' + $(this).parent().parent().find('.blogId').first().val(), data, function(msg){
-						//console.log(results);
-						var results = msg.comments;
-						var commentsList = that.parent().parent().find('.comments-list').first();
-						commentsList.empty();
-						that.parent().parent().parent().find('.comments-count').first().text(' ' + results.length + '条评论');
-						for(var i = 0; i < results.length; i++ ){
-							var author = results[i].hidden == true ? 'Blog用户': results[i].author;
-							var time = moment(results[i].date)
-							                    .format('MM/DD/YYYY') === moment()
-							                    .format('MM/DD/YYYY') ? moment(results[i].date)
-							                    .format('HH:mm:ss'): moment(results[i].date)
-							                    .format('YYYY-MM-DD');
-							var delateHtml = msg.name === results[i].author? ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>': "";
-							if(results[i].reply==''){
-								var _h = '<li>' +
-							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复于: ' +
-							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
-							               delateHtml +
-							            '</p>' +
-										'<p class="comment-body">' + results[i].comment +'</p>' +
-										'<hr>' +
-							         '</li>';
-							} else {
-								var _h = '<li>' +
-							            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复: ' + results[i].reply + ' ' +
-							              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
-							              delateHtml +
-							            '</p>' +
-										'<p class="comment-body">' + results[i].comment +'</p>' +
-										'<hr>' +
-							         '</li>';
+					    };
+						var that = $(this);
+
+						var divEdit = $(this).parent().parent().find('.textarea').first();
+						divEdit.focus(function(e){
+							that.parent().find('.orange').first().remove();
+						});
+
+						if(data.comment.length !== 0){
+							$.post('/comment/' + $(this).parent().parent().find('.blogId').first().val(), data, function(msg){
+							//console.log(results);
+							var results = msg.comments;
+							var commentsList = that.parent().parent().find('.comments-list').first();
+							commentsList.empty();
+							that.parent().parent().parent().find('.comments-count').first().text(' ' + results.length + '条评论');
+							for(var i = 0; i < results.length; i++ ){
+								var author = results[i].hidden == true ? 'Blog用户': results[i].author;
+								var time = moment(results[i].date)
+								                    .format('MM/DD/YYYY') === moment()
+								                    .format('MM/DD/YYYY') ? moment(results[i].date)
+								                    .format('HH:mm:ss'): moment(results[i].date)
+								                    .format('YYYY-MM-DD');
+								var delateHtml = msg.name === results[i].author? ' <a href="javascript:;" role="delate" comment-id="' + results[i]._id + '"><span class="glyphicon glyphicon-trash delate">删除</span></a>': "";
+								if(results[i].reply==''){
+									var _h = '<li>' +
+								            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复于: ' +
+								              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
+								               delateHtml +
+								            '</p>' +
+											'<p class="comment-body">' + results[i].comment +'</p>' +
+											'<hr>' +
+								         '</li>';
+								} else {
+									var _h = '<li>' +
+								            '<p class="comment-header" comment-author="' + author + '">' + author + '  回复: ' + results[i].reply + ' ' +
+								              '<span>' + time + '</span>' + ' <a href="javascript:;" role="reply"><span class="glyphicon glyphicon-share-alt reply">回复  </span></a>' +
+								              delateHtml +
+								            '</p>' +
+											'<p class="comment-body">' + results[i].comment +'</p>' +
+											'<hr>' +
+								         '</li>';
+								        }
+								
+								commentsList.append( $(_h) );
 							}
-							
-							commentsList.append( $(_h) );
-						}
-						that.parent().parent().find('.write-comment').first().text('');
-						that.parent().parent().find('.write-comment').first().attr('reply-to','');
-						//replyEvent();
-					});
+							that.parent().parent().find('.write-comment').first().text('');
+							that.parent().parent().find('.write-comment').first().attr('reply-to','');
+							//replyEvent();
+						    });
+						} else {
+							$(this).parent().find('.form-group').first().append(' ' + '<span class="glyphicon glyphicon-info-sign orange">评论内容不能为空</span>');
+						}	
 					}
 				});
 				
@@ -166,12 +175,12 @@ $(function() {
 				$('#render_blogs').delegate('button','click',function(e){
 					if($(this).parent().hasClass('vote')){
 						var data = {
-						userName: $(this).parent('.vote').first().attr('user-name'),
+						userId: $(this).parent('.vote').first().attr('user-id'),
 						isVote: $(this).attr('data-role') === 'up' ? true: false
 					  };
 					  var that = $(this);
 					  $.post('/vote/' + $(this).parent('.vote').first().attr('blog-id'), data, function(results){
-						//console.log(results);
+						console.log(results);
 						var _text;
 						if(results.nameArray.length == 0){
 							_text = '还没人赞同';
@@ -360,7 +369,7 @@ $(function() {
 				$('#render_blogs').delegate('a','click',function(e){
 					if($(this).hasClass('watch')){
 						var data = {
-						    watcher: $('#profile').attr('my-name')
+						    watcher: $('#profile').attr('my-id')
 					    };
 					    var blogId = $(this).parents('.single-blog').first().attr('special_id');
 					    var that = $(this);
@@ -409,6 +418,7 @@ $(function() {
 					});	
 				}
 				translateToSvg();
+
 
 			});
 

@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var bae = require('./bae');
 
 var app = express();
 
@@ -29,6 +30,8 @@ var post_watcher = require('./routes/post_watcher');
 var get_single = require('./routes/get_single');
 var post_get_10 = require('./routes/post_get_10');
 var span_to_svg = require('./routes/span_to_svg');
+var get_download = require('./routes/get_download');
+var validate_email = require('./routes/validate_email');
 
 //引入自定义方法contains，用来判断一个元素是否是数组的某个元素。contains(array, element);
 //如果包含就返回true，不包含返回false。
@@ -41,10 +44,13 @@ console.log(contains(a, 6) + ' test');*/
 app.locals.moment = require('moment');
 app.locals.contains = contains;
 
-var url = "mongodb://127.0.0.1:12345/blog";
+//var url = 'mongodb://mongo.duapp.com:8908/xgQLEdSsexdigfKfZxwj';
+//var user = '78b39e5c37054e82865b9d2bda504946';
+//var pas = 'd61d4f7285e44b7083000c287f65074f';
 
 //mongoose连接主机：127.0.0.1，端口：12345，数据库：blog
-mongoose.connect( url );
+//mongoose.connect( url ,{user:user,pass:pas});
+bae.getConnect();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -64,9 +70,7 @@ app.use(session({
   saveUninitialized:false, 
   cookie: { maxAge: 3600000 },
   store:new MongoStore({
-            host: "127.0.0.1",
-            port: "12345",
-            db: "blog"
+            mongooseConnection: bae.mongoose.connection 
             })
 }));
 
@@ -101,6 +105,8 @@ app.use('/', post_watcher);
 app.use('/', get_single);
 app.use('/', post_get_10);
 app.use('/', span_to_svg);
+app.use('/', get_download);
+app.use('/', validate_email);
 
 
 // catch 404 and forward to error handler

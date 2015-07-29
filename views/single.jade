@@ -17,7 +17,7 @@ block content
           li(id='home-page'): a(href='/') 主页
           li: a(href='/profile') 个人页面
           li: a(href='#',id='generate-article') 发布文章   
-          li(id='profile',my-name=me.name.full)
+          li(id='profile',my-name=me.name.full,my-id=me._id)
             p #{me.name.full} &nbsp;&nbsp;
               a(href="/logout",id='logout')
                 span(class='glyphicon glyphicon-off') 
@@ -115,7 +115,7 @@ block content
         ul(id='render_blogs')
           each blog in blogs
             li(special_id=blog._id,class='single-blog')
-              div(class='vote',blog-id=blog._id,user-name=me.name.full)
+              div(class='vote',blog-id=blog._id,user-id=me._id)
                 button(class='up',title='感谢作者',data-role='up')
                   span(class='glyphicon glyphicon-menu-up')
                   p #{blog.voter.length}
@@ -147,11 +147,11 @@ block content
               if (blog.voter.length == 0)
                 p(class='voter') 还没有人赞同
               else if (blog.voter.length == 1)
-                p(class='voter') #{blog.voter[0]} 赞同
+                p(class='voter') #{blog.voter[0].name.full} 赞同
               else if (blog.voter.length == 2)
-                p(class='voter') #{blog.voter[0]},#{blog.voter[1]} 两人赞同
+                p(class='voter') #{blog.voter[0].name.full},#{blog.voter[1].name.full} 两人赞同
               else
-                p(class='voter') #{blog.voter[0]},#{blog.voter[1]},#{blog.voter[2]} 等人赞同
+                p(class='voter') #{blog.voter[0].name.full},#{blog.voter[1].name.full},#{blog.voter[2].name.full} 等人赞同
               div(class='content') !{blog.content}
               div(class='content-modify-control hidden')
                 a(href='javascript:;') 取消
@@ -172,7 +172,7 @@ block content
                 if (blog.author == me.name.full)
                   a(href='javascript:;',role='modify',class='content-modify') &nbsp;
                     span(class='glyphicon glyphicon-pencil') 文章修改
-                if (!contains( blog.watcher, me.name.full ))
+                if (!contains( blog.watcher, me._id ))
                   a(href='javascript:;',role='modify',class='watch') &nbsp;
                     span(class='glyphicon glyphicon-heart-empty') 关注文章
                 else

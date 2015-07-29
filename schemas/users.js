@@ -7,7 +7,11 @@ var users = new Schema({
 		last: String
 	},
 	email: {type: String, unique: true},
-	password: {type: String, index: true}
+	password: {type: String, index: true},
+	singupDate:{
+		type:Date,
+		default: Date.now()
+	}
 });
 
 users.virtual('name.full').get(function(){

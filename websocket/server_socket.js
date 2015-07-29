@@ -27,7 +27,6 @@ function serverSocket(server){
 				});
 			});
 		});
-
 	});
 };
 

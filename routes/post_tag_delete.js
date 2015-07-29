@@ -11,7 +11,7 @@ router.post('/tag_delete/:blogId', function(req, res, next) {
 			console.log(err);
 		} else {
 			for(var i = 0; i < tags.length; i ++){
-				if(tags[i] == req.body.tag){
+				if(tags[i] == req.body.tag||tags[i] == ''){
 					tags.splice(i, 1);
 				}
 			}

@@ -12,16 +12,16 @@ router.post('/vote/:blogId', function(req, res, next) {
 		} else {
 			var isNew = true;
 			blog[0].voter.forEach(function(e){
-				if(e == req.body.userName) isNew = false;
+				if(e == req.body.userId) isNew = false;
 			});
 			if(isNew&&req.body.isVote==='true'){
-				blog[0].voter.unshift(req.body.userName);
+				blog[0].voter.unshift(req.body.userId);
 			    blog[0].save(function(err){
 				if(err) console.log(err);
 			    });
 			} else if(!isNew){
 				for(var i = 0; i < blog[0].voter.length; i ++){
-					if(blog[0].voter[i] == req.body.userName){
+					if(blog[0].voter[i] == req.body.userId || blog[0].voter[i] == ''){
 						blog[0].voter.splice(i,1);
 					}
 				}
@@ -29,15 +29,22 @@ router.post('/vote/:blogId', function(req, res, next) {
 			    	if(err) console.log(err);
 			    });
 			}
-			if(blog[0].voter.length == 0){
-				res.send({length: blog[0].voter.length,nameArray:[]});
-			} else if(blog[0].voter.length == 1){
-				res.send({length: blog[0].voter.length,nameArray:[blog[0].voter[0]]});
-			} else if(blog[0].voter.length == 2){
-				res.send({length: blog[0].voter.length,nameArray:[blog[0].voter[0],blog[0].voter[1]]});
+			var nameArray = [],len = Math.min(3,blog[0].voter.length);
+			if(len != 0){
+				for(var i = 0; i < len; i ++){
+					Users.findById(blog[0].voter[i],function(err, doc){
+						console.log(doc);
+						nameArray.push(doc.name.full);
+						if(nameArray.length == len){
+							res.send({length: blog[0].voter.length,nameArray: nameArray});		
+						}	
+					});
+				} 
 			} else {
-				res.send({length: blog[0].voter.length,nameArray:[blog[0].voter[0],blog[0].voter[1],blog[0].voter[2]]});
-			}			
+					res.send({length:0,nameArray:[]});
+				} 
+			
+			
 		}
 	});
 

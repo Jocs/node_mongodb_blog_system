@@ -12,7 +12,7 @@ a:hover{
 /*top-header*/
 #top-header{
 	width: 100%;
-	height: 350px;
+	height: 380px;
 	background-color: #0078d8;
 }
 #top-header #top-header-inner{
@@ -65,13 +65,22 @@ a:hover{
 #top-header #top-header-inner .top-right #form-header a:active{
 	text-decoration: none;
 }
-input[type='submit']{
+input[type='submit'],#signup a{
 	font-size: 16px;
 	color: white;
 	background: #80C3F7;
+	text-align: center;
+	text-decoration: none;
 }
 #signup{
 	display: none;
+}
+#signup ul{
+	padding-left:10px;
+	list-style: none;
+	width:230px;
+	height: auto;
+	color:orange;
 }
 .inline{
 	display: inline-block;
@@ -207,6 +216,9 @@ input[type='submit']{
 	color:#ccc;
 	font-size: 14px;
 	font-weight: normal;
+}
+#post-blog #blog-form #blog-form-body .orange{
+	color:orange;
 }
 #post-blog #blog-form #blog-form-body .btn-primary{
 	position: absolute;
@@ -392,6 +404,9 @@ input[type='submit']{
 	line-height: 45px;
 	color:#aaa;
 	font-size: 13px;
+}
+#blog-body #body-left .get-comments .comment-wrapper .form-group .orange{
+	color:orange;
 }
 #blog-body #body-left .get-comments .post-comment{
 	position: absolute;
