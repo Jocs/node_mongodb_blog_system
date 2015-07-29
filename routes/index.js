@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
 					Blogs.findOne({_id:blogs[i]._id.toString()})
 						 .populate('voter')
 						 .exec(function(err,doc){
-						 	blogsArray.unshift(doc);
+						 	blogsArray.push(doc);
 						 	if(blogsArray.length == blogs.length){
 						 		req.session.blogs = blogsArray;
 						 		renderPage();

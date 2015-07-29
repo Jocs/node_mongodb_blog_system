@@ -15,8 +15,11 @@ $(function(){
 		});
 		    ul.empty();
 		function validateName(){
-			if(firstName.val().length == 0||lastName.val().length == 0){
-				ul.append('<li><span class="glyphicon glyphicon-info-sign"></span> 姓或名不能为空</li>');
+			if(firstName.val().length == 0||
+				lastName.val().length == 0||
+				~firstName.val().indexOf(' ')||
+				~lastName.val().indexOf(' ')){
+				ul.append('<li><span class="glyphicon glyphicon-info-sign"></span> 姓或名不能为空或包含空格</li>');
 				return false;
 		  	} else {
 		  		return true;
@@ -32,8 +35,9 @@ $(function(){
 			}
 		}
 		function validatePass(){
-			if(pass.val().length < 6){
-				ul.append('<li><span class="glyphicon glyphicon-info-sign"></span> 密码小于六个字符</li>');
+			if(pass.val().length < 6||
+				~pass.val().indexOf(' ')){
+				ul.append('<li><span class="glyphicon glyphicon-info-sign"></span> 密码小于六个字符或包含空格</li>');
 				return false;
 			} else {
 				return true;

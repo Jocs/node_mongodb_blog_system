@@ -412,12 +412,20 @@ $(function() {
 					});
 				});
 				//通过Ajax对span.arrow进行替换，用svg来替换span.arrow
+				function hasSVG(){ 
+					var SVG_NS = 'http://www.w3.org/2000/svg', 
+					    doc = document;
+					return !!doc.createElementNS && 
+					!!doc.createElementNS(SVG_NS, 'svg').createSVGRect; 
+					} 
 				function translateToSvg(){
 					$.get('/span_to_svg',function(msg){
 						$('.arrow').after(msg).remove();
 					});	
 				}
-				translateToSvg();
+				if(!hasSVG()){
+					translateToSvg();
+				}
 
 
 			});
