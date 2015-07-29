@@ -9,7 +9,8 @@ $(function(){
 	var ul = $('#inform_left ul');
     var informArrow = $('#inform_arrow');
 	//登陆用户通过socket连接服务器
-	var socket = io.connect('http://localhost:3000');    
+    var url = window.location.href;
+    var socket = io.connect(url);  
 	//登陆用户发送订阅事件，通知服务器需要加入的rooms  
     socket.emit('subscribe', { rooms: rooms });
 

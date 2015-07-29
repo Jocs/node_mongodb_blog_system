@@ -1,9 +1,10 @@
 {
-  "name": "node_mongodb_blog_system",
-  "version": "0.0.0",
-  "private": true,
+  "name": "bae-Blog-nodejs",
+  "version": "1.0.0",
+  "author": "luoran",
+  "description": "The first bae nodejs app!",
   "scripts": {
-    "start": "node ./bin/www"
+        "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "~1.12.4",
