@@ -23,6 +23,7 @@ window.onload = function(){
 	};
 	textarea.onblur = function(){
 		var _html = textarea.innerHTML;
+		console.log(_html);
 		hiddenBody.value = _html;
 	};
 //以下进行了修改，一篇文章只能有一个id属性。

@@ -50,7 +50,7 @@ $(function() {
 						var data = {
 						author:$(this).parent().parent().find('.comment-author').first().val(), 
 						reply: $(this).parent().parent().find('.write-comment').first().attr('reply-to'),
-						comment: $(this).parent().parent().find('.write-comment').first().text(),
+						comment: $(this).parent().parent().find('.write-comment').first().html(),
 						hidden: $(this).parent().parent().find('.comment-hidden').first().is(':checked'),
 						date: new Date()
 					    };
@@ -423,7 +423,7 @@ $(function() {
 						$('.arrow').after(msg).remove();
 					});	
 				}
-				if(!hasSVG()){
+				if(hasSVG()){
 					translateToSvg();
 				}
 
